@@ -12,7 +12,7 @@
 <div class="container">
 
     @if(auth()->check())
-        {{--<a href="{{route('logout')}}">Logout</a>--}}
+        <a href="{{route('logout')}}">Logout</a>
     @endif
 
     @include('success.success')

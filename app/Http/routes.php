@@ -33,3 +33,8 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth'], function()
         'uses' => 'AuthController@getLogout'
     ]);
 });
+
+Route::group(['middleware' => 'auth'], function()
+{
+    Route::resource('product', 'ProductController');
+});
