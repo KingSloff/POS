@@ -14,3 +14,22 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Authentication routes...
+Route::group(['namespace' => 'Auth', 'prefix' => 'auth'], function()
+{
+    Route::get('login', [
+        'as' => 'login',
+        'uses' => 'AuthController@getLogin'
+    ]);
+
+    Route::post('login', [
+        'as' => 'login',
+        'uses' => 'AuthController@postLogin'
+    ]);
+
+    Route::get('logout', [
+        'as' => 'logout',
+        'uses' => 'AuthController@getLogout'
+    ]);
+});
