@@ -20,6 +20,11 @@ class Stock extends Model
      */
     protected $guarded = [];
 
+    public function cpu()
+    {
+        return round($this->cost / $this->amount, 2);
+    }
+
     /**
      * A stock entry belongs to a single product
      */

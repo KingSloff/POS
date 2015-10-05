@@ -15,5 +15,8 @@
         {!! Form::open(['route' => ['product.destroy', $product], 'method' => 'delete']) !!}
         <button type="submit" class="btn btn-danger">Delete</button>
         {!! Form::close() !!}
+
+        <h2>Stock</h2>
+        @include('stocks.parts.stocks')
     </div>
 @endsection

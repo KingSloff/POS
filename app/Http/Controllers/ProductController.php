@@ -64,6 +64,8 @@ class ProductController extends Controller
     {
         $this->authorize($product);
 
+        $product->with('stocks');
+
         return view('products.show', compact('product'));
     }
 
