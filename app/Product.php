@@ -37,4 +37,12 @@ class Product extends Model
     {
         return route('product.edit', $this);
     }
+
+    /**
+     * A product has many stock entries
+     */
+    public function stocks()
+    {
+        return $this->hasMany('App\Stock');
+    }
 }

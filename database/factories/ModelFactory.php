@@ -39,3 +39,14 @@ $factory->define(App\Product::class, function(Faker\Generator $faker)
         'name' => ucwords($faker->word.' '.$faker->word),
     ];
 });
+
+/**
+ * Stock factories
+ */
+$factory->define(App\Stock::class, function(Faker\Generator $faker)
+{
+    return [
+        'amount' => $faker->numberBetween(1, 100),
+        'cost' => $faker->randomFloat(2, 0, 200)
+    ];
+});
