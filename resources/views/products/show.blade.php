@@ -18,5 +18,7 @@
 
         <h2>Stock</h2>
         @include('stocks.parts.stocks')
+
+        <a href="{{route('product.stock.create', ['product' => $product])}}" class="btn btn-primary">Add Stock Entry</a>
     </div>
 @endsection

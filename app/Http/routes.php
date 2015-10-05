@@ -37,4 +37,8 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth'], function()
 Route::group(['middleware' => 'auth'], function()
 {
     Route::resource('product', 'ProductController');
+
+    Route::resource('product.stock', 'StockController',[
+        'except' => ['index', 'show']
+    ]);
 });
