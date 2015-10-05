@@ -11,6 +11,9 @@
 |
 */
 
+/**
+ * User factories
+ */
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->name,
@@ -20,6 +23,16 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
+$factory->defineAs(App\User::class, 'admin', function(Faker\Generator $faker) use($factory)
+{
+    $user = $factory->raw(App\User::class);
+
+    return array_merge($user, ['is_admin' => true]);
+});
+
+/**
+ * Product factories
+ */
 $factory->define(App\Product::class, function(Faker\Generator $faker)
 {
     return [

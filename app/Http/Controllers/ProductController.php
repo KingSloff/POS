@@ -18,6 +18,8 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $this->authorize(new Product());
+
         $products = Product::get();
 
         return view('products.index', compact('products'));
@@ -30,6 +32,8 @@ class ProductController extends Controller
      */
     public function create()
     {
+        $this->authorize(new Product());
+
         return view('products.create');
     }
 
@@ -41,6 +45,8 @@ class ProductController extends Controller
      */
     public function store(CreateProductRequest $request)
     {
+        $this->authorize(new Product());
+
         Product::create([
             'name' => $request->name,
         ]);
@@ -56,6 +62,8 @@ class ProductController extends Controller
      */
     public function show($product)
     {
+        $this->authorize($product);
+
         return view('products.show', compact('product'));
     }
 
@@ -67,6 +75,8 @@ class ProductController extends Controller
      */
     public function edit($product)
     {
+        $this->authorize($product);
+
         return view('products.edit', compact('product'));
     }
 
@@ -79,6 +89,8 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, $product)
     {
+        $this->authorize($product);
+
         $product->name = $request->name;
 
         $product->save();
@@ -94,6 +106,8 @@ class ProductController extends Controller
      */
     public function destroy($product)
     {
+        $this->authorize($product);
+
         $product->delete();
 
         return redirect()->route('product.index');
