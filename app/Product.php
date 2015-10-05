@@ -21,24 +21,6 @@ class Product extends Model
     protected $guarded = [];
 
     /**
-     * Get the link to show a product
-     *
-     */
-    public function getShowLink()
-    {
-        return route('product.show', $this);
-    }
-
-    /**
-     * Get the link to edit a product
-     *
-     */
-    public function getEditLink()
-    {
-        return route('product.edit', $this);
-    }
-
-    /**
      * A product has many stock entries
      */
     public function stocks()

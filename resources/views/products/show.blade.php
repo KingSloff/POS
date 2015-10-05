@@ -8,11 +8,12 @@
         Name: {{$product->name}} <br />
 
         <h2>Functions</h2>
-        <a href="{{route('product.index')}}" class="btn btn-default">Back</a>
-
-        <a href="{{$product->getEditLink()}}" class="btn btn-primary">Edit</a>
 
         {!! Form::open(['route' => ['product.destroy', $product], 'method' => 'delete']) !!}
+        <a href="{{route('product.index')}}" class="btn btn-default">Back</a>
+
+        <a href="{{route('product.edit', $product)}}" class="btn btn-primary">Edit</a>
+
         <button type="submit" class="btn btn-danger">Delete</button>
         {!! Form::close() !!}
 
