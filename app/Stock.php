@@ -44,10 +44,33 @@ class Stock extends Model
     }
 
     /**
+     * Amount of stock remaining
+     */
+    public function stockRemaining()
+    {
+        $amount = $this->amount;
+
+        foreach($this->sales as $sale)
+        {
+            $amount -= $sale->amount;
+        }
+
+        return $amount;
+    }
+
+    /**
      * A stock entry belongs to a single product
      */
     public function product()
     {
         return $this->belongsTo('App\Product');
+    }
+
+    /**
+     * A stock entry has many sales
+     */
+    public function sales()
+    {
+        return $this->hasMany('App\Sale');
     }
 }

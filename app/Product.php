@@ -29,7 +29,7 @@ class Product extends Model
 
         foreach($this->stocks as $stock)
         {
-            $count += $stock->amount;
+            $count += $stock->stockRemaining();
         }
 
         return $count;
