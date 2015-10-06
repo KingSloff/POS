@@ -20,9 +20,27 @@ class Stock extends Model
      */
     protected $guarded = [];
 
+    /**
+     * Calc the cost per unit
+     *
+     * @return string
+     */
     public function cpu()
     {
-        return round($this->cost / $this->amount, 2);
+        return Services::displayAmount($this->cost / $this->amount);
+    }
+
+    /**
+     * Profit percentage
+     */
+    public function profitPercentage()
+    {
+        return Services::displayAmount($this->profitPercentageRaw()).'%';
+    }
+
+    public function profitPercentageRaw()
+    {
+        return ($this->product->price - $this->cpu()) / $this->cpu() * 100;
     }
 
     /**

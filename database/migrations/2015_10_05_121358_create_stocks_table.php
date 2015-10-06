@@ -21,7 +21,7 @@ class CreateStocksTable extends Migration
                 ->on('products');
 
             $table->integer('amount');
-            $table->double('cost');
+            $table->decimal('cost');
 
             $table->timestamps();
         });

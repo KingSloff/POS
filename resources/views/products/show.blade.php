@@ -4,21 +4,53 @@
 
 @section('body')
     <div>
-        ID: {{$product->id}} <br />
-        Name: {{$product->name}} <br />
+        <h2>
+            {!! Form::open(['route' => ['product.destroy', $product], 'method' => 'delete']) !!}
+            <a href="{{route('product.index')}}" class="glyphicon glyphicon-chevron-left"></a>
+            {{$product->name}}
 
-        <h2>Functions</h2>
+            <div style="float: right">
+                <a href="{{route('product.edit', $product)}}" class="btn btn-primary">Edit</a>
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </div>
+            {!! Form::close() !!}
+        </h2>
 
-        {!! Form::open(['route' => ['product.destroy', $product], 'method' => 'delete']) !!}
-        <a href="{{route('product.index')}}" class="btn btn-default">Back</a>
+        <table class="table table-striped">
+            <colgroup>
+                <col span="1" style="width: 10%;">
+                <col span="1" style="width: 40%;">
+                <col span="1" style="width: 10%;">
+                <col span="1" style="width: 40%;">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td><strong>Price</strong></td>
+                    <td>{{$product->price}}</td>
 
-        <a href="{{route('product.edit', $product)}}" class="btn btn-primary">Edit</a>
+                    <td><strong>Suggested Price</strong></td>
+                    <td>{{$product->suggestedPrice()}}</td>
+                </tr>
+                <tr>
+                    <td><strong>Profit Percentage</strong></td>
+                    <td>{{$product->profitPercentage()}}</td>
 
-        <button type="submit" class="btn btn-danger">Delete</button>
-        {!! Form::close() !!}
+                    <td><strong>Stock</strong></td>
+                    <td>{{$product->inStock()}}</td>
+                </tr>
+            </tbody>
+        </table>
 
-        <h2>Stock</h2>
-        @include('stocks.parts.stocks')
+        <div>
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#stock">Stock</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="stock" class="tab-pane fade in active">
+                    @include('stocks.parts.stocks')
+                </div>
+            </div>
+        </div>
 
         <a href="{{route('product.stock.create', ['product' => $product])}}" class="btn btn-primary">Add Stock Entry</a>
     </div>

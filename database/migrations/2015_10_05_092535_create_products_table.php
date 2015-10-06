@@ -15,6 +15,10 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+
+            $table->decimal('price');
+            $table->double('target_profit_percentage', null, 2);
+
             $table->timestamps();
         });
     }

@@ -9,7 +9,7 @@
 
     <div>
         <button type="submit" class="btn btn-primary">Update</button>
-        <a href="{{$product->getShowLink()}}" class="btn btn-default">Cancel</a>
+        <a href="{{route('product.show', $product)}}" class="btn btn-default">Cancel</a>
     </div>
 
     {!! Form::close() !!}

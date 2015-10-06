@@ -25,6 +25,8 @@ class UpdateProductRequest extends Request
     {
         return [
             'name' => 'required',
+            'price' => 'numeric|min:0.001',
+            'target_profit_percentage' => 'numeric|min:0.001',
         ];
     }
 }

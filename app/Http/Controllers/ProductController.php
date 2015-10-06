@@ -49,6 +49,8 @@ class ProductController extends Controller
 
         Product::create([
             'name' => $request->name,
+            'price' => $request->price,
+            'target_profit_percentage' => $request->target_profit_percentage,
         ]);
 
         return redirect()->route('product.index')->with('success', 'Product successfully created');
@@ -94,6 +96,8 @@ class ProductController extends Controller
         $this->authorize($product);
 
         $product->name = $request->name;
+        $product->price = $request->price;
+        $product->target_profit_percentage = $request->target_profit_percentage;
 
         $product->save();
 

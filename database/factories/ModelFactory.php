@@ -37,6 +37,8 @@ $factory->define(App\Product::class, function(Faker\Generator $faker)
 {
     return [
         'name' => ucwords($faker->word.' '.$faker->word),
+        'price' => $faker->randomFloat(2, 0, 200),
+        'target_profit_percentage' => $faker->randomFloat(2, 0, 100),
     ];
 });
 

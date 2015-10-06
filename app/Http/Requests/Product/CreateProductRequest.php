@@ -24,7 +24,9 @@ class CreateProductRequest extends Request
     public function rules()
     {
         return [
-            'name' => 'required'
+            'name' => 'required',
+            'price' => 'numeric|min:0.001',
+            'target_profit_percentage' => 'numeric|min:0.001',
         ];
     }
 }
