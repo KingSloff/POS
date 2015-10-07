@@ -38,6 +38,20 @@
                     <td><strong>Stock</strong></td>
                     <td>{{$product->inStock()}}</td>
                 </tr>
+                <tr>
+                    <td><strong>Profit Made</strong></td>
+                    <td>{{$product->prettyProfit()}}</td>
+
+                    <td><strong></strong></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong>Profit Percentage Made</strong></td>
+                    <td>{{$product->prettyProfitPercentageMade()}}</td>
+
+                    <td><strong></strong></td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
 

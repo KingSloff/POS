@@ -95,6 +95,51 @@ class Product extends Model
     }
 
     /**
+     * Profit made on this product
+     */
+    public function profit()
+    {
+        $profit = 0;
+
+        foreach($this->sales as $sale)
+        {
+            $profit += ($sale->price - $sale->cpu) * $sale->amount;
+        }
+
+        return $profit;
+    }
+
+    public function prettyProfit()
+    {
+        return Services::displayAmount($this->profit());
+    }
+
+    /**
+     * Profit percentage made
+     */
+    public function profitPercentageMade()
+    {
+        $totalCost = 0;
+
+        foreach($this->sales as $sale)
+        {
+            $totalCost += $sale->cpu * $sale->amount;
+        }
+
+        if($totalCost == 0)
+        {
+            return 0;
+        }
+
+        return $this->profit() / $totalCost * 100;
+    }
+
+    public function prettyProfitPercentageMade()
+    {
+        return Services::displayAmount($this->profitPercentageMade()).'%';
+    }
+
+    /**
      * A product has many stock entries
      */
     public function stocks()
