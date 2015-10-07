@@ -3,8 +3,6 @@
 @section('title', 'Checkout')
 
 @section('body')
-    <h1>Checkout</h1>
-
     <div class="col-sm-3">
         {!! Form::open(['route' => 'checkout.store']) !!}
 

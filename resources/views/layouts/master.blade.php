@@ -11,9 +11,7 @@
 
 <div class="container">
 
-    @if(auth()->check())
-        <a href="{{route('logout')}}">Logout</a>
-    @endif
+    @include('layouts.nav')
 
     @include('success.success')
 
