@@ -29,7 +29,7 @@ class Product extends Model
 
         foreach($this->stocks as $stock)
         {
-            $count += $stock->stockRemaining();
+            $count += $stock->in_stock;
         }
 
         return $count;
@@ -46,10 +46,15 @@ class Product extends Model
 
         if($smallest == null)
         {
-            return '0.00%';
+            return 0;
         }
 
-        return Services::displayAmount($smallest->profitPercentageRaw()).'%';
+        return $smallest->profitPercentage();
+    }
+
+    public function prettyProfitPercentage()
+    {
+        return Services::displayAmount($this->profitPercentage()).'%';
     }
 
     /**
@@ -67,7 +72,7 @@ class Product extends Model
             {
                 $smallest = $stock;
             }
-            else if($stock->profitPercentageRaw() < $smallest->profitPercentageRaw())
+            else if($stock->profitPercentage() < $smallest->profitPercentage())
             {
                 $smallest = $stock;
             }
@@ -95,5 +100,13 @@ class Product extends Model
     public function stocks()
     {
         return $this->hasMany('App\Stock');
+    }
+
+    /**
+     * A product has many sales
+     */
+    public function sales()
+    {
+        return $this->hasMany('App\Sale');
     }
 }

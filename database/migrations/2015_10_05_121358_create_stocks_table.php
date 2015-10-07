@@ -20,7 +20,8 @@ class CreateStocksTable extends Migration
                 ->references('id')
                 ->on('products');
 
-            $table->integer('amount');
+            $table->integer('amount')->unsigned();
+            $table->integer('in_stock')->unsigned();
             $table->decimal('cost');
 
             $table->timestamps();

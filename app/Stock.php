@@ -27,7 +27,12 @@ class Stock extends Model
      */
     public function cpu()
     {
-        return Services::displayAmount($this->cost / $this->amount);
+        return $this->cost / $this->amount;
+    }
+
+    public function prettyCpu()
+    {
+        return Services::displayAmount($this->cpu());
     }
 
     /**
@@ -35,27 +40,12 @@ class Stock extends Model
      */
     public function profitPercentage()
     {
-        return Services::displayAmount($this->profitPercentageRaw()).'%';
-    }
-
-    public function profitPercentageRaw()
-    {
         return ($this->product->price - $this->cpu()) / $this->cpu() * 100;
     }
 
-    /**
-     * Amount of stock remaining
-     */
-    public function stockRemaining()
+    public function prettyProfitPercentage()
     {
-        $amount = $this->amount;
-
-        foreach($this->sales as $sale)
-        {
-            $amount -= $sale->amount;
-        }
-
-        return $amount;
+        return Services::displayAmount($this->profitPercentage()).'%';
     }
 
     /**
@@ -64,13 +54,5 @@ class Stock extends Model
     public function product()
     {
         return $this->belongsTo('App\Product');
-    }
-
-    /**
-     * A stock entry has many sales
-     */
-    public function sales()
-    {
-        return $this->hasMany('App\Sale');
     }
 }

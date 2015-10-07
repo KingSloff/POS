@@ -33,7 +33,7 @@
                 </tr>
                 <tr>
                     <td><strong>Profit Percentage</strong></td>
-                    <td>{{$product->profitPercentage()}}</td>
+                    <td>{{$product->prettyProfitPercentage()}}</td>
 
                     <td><strong>Stock</strong></td>
                     <td>{{$product->inStock()}}</td>
@@ -44,14 +44,19 @@
         <div>
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#stock">Stock</a></li>
+                <li><a data-toggle="tab" href="#sales">Sales</a></li>
             </ul>
             <div class="tab-content">
                 <div id="stock" class="tab-pane fade in active">
                     @include('stocks.parts.stocks')
+
+                    <a href="{{route('product.stock.create', ['product' => $product])}}" class="btn btn-primary">Add Stock Entry</a>
+                </div>
+
+                <div id="sales" class="tab-pane fade">
+                    @include('sales.parts.sales')
                 </div>
             </div>
         </div>
-
-        <a href="{{route('product.stock.create', ['product' => $product])}}" class="btn btn-primary">Add Stock Entry</a>
     </div>
 @endsection

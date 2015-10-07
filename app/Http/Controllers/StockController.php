@@ -34,6 +34,7 @@ class StockController extends Controller
     {
         $product->stocks()->create([
             'amount' => $request->amount,
+            'in_stock' => $request->amount,
             'cost' => $request->cost
         ]);
 
@@ -64,6 +65,7 @@ class StockController extends Controller
     {
         $stock->cost = $request->cost;
         $stock->amount = $request->amount;
+        $stock->in_stock = $request->amount;
 
         $stock->save();
 

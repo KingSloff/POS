@@ -47,8 +47,11 @@ $factory->define(App\Product::class, function(Faker\Generator $faker)
  */
 $factory->define(App\Stock::class, function(Faker\Generator $faker)
 {
+    $amount = $faker->numberBetween(1, 100);
+
     return [
-        'amount' => $faker->numberBetween(1, 100),
+        'amount' => $amount,
+        'in_stock' => $amount,
         'cost' => $faker->randomFloat(2, 0, 200)
     ];
 });

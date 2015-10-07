@@ -21,10 +21,36 @@ class Sale extends Model
     protected $guarded = [];
 
     /**
-     * A sale belongs to a stock entry
+     * Total made on purchase
      */
-    public function stock()
+    public function total()
     {
-        return $this->belongsTo('App\Stock');
+        return $this->price * $this->amount;
+    }
+
+    public function prettyTotal()
+    {
+        return Services::displayAmount($this->total());
+    }
+
+    /**
+     * Profit percentage made on purchase
+     */
+    public function profitPercentage()
+    {
+        return ($this->price - $this->cpu) / $this->cpu * 100;
+    }
+
+    public function prettyProfitPercentage()
+    {
+        return Services::displayAmount($this->profitPercentage()).'%';
+    }
+
+    /**
+     * A sale belongs to a product
+     */
+    public function product()
+    {
+        return $this->belongsTo('App\Product');
     }
 }

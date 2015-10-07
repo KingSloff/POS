@@ -19,6 +19,7 @@ elixir(function(mix) {
     ]);
 
     mix.scripts([
+        'jquery-1.11.3.min.js',
         'bootstrap.js'
     ]);
 

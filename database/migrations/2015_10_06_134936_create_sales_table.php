@@ -15,10 +15,10 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->integer('stock_id')->unsigned();
-            $table->foreign('stock_id')
+            $table->integer('product_id')->unsigned();
+            $table->foreign('product_id')
                 ->references('id')
-                ->on('stocks');
+                ->on('products');
 
             $table->decimal('price');
             $table->decimal('cpu');
