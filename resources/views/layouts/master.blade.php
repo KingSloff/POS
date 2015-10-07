@@ -9,10 +9,9 @@
 
 <body>
 
+@include('layouts.nav')
+
 <div class="container">
-
-    @include('layouts.nav')
-
     @include('success.success')
 
     @include('errors.errors')
