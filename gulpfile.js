@@ -15,12 +15,15 @@ elixir(function(mix) {
 
     mix.styles([
         'bootstrap.css',
-        'bootstrap-theme.css'
+        'bootstrap-theme.css',
+        'selectize.bootstrap3.css'
     ]);
 
     mix.scripts([
         'jquery-1.11.3.min.js',
-        'bootstrap.js'
+        'bootstrap.js',
+        'selectize.js',
+        'main.js'
     ]);
 
     mix.version([

@@ -28,6 +28,8 @@ class RouteServiceProvider extends ServiceProvider
 
         $router->model('product', 'App\Product');
         $router->model('stock', 'App\Stock');
+        $router->model('cartItem', 'App\CartItem');
+        $router->model('cart', 'App\Cart');
     }
 
     /**

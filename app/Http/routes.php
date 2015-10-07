@@ -11,9 +11,30 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [
+    'as' => 'checkout.index',
+    'uses' => 'CheckoutController@index'
+]);
+
+Route::post('/', [
+    'as' => 'checkout.store',
+    'uses' => 'CheckoutController@store'
+]);
+
+Route::put('/{cartItem}', [
+    'as' => 'checkout.update',
+    'uses' => 'CheckoutController@update'
+]);
+
+Route::delete('/{cartItem}', [
+    'as' => 'checkout.destroy',
+    'uses' => 'CheckoutController@destroy'
+]);
+
+Route::post('/checkout/{cart}', [
+    'as' => 'checkout.checkout',
+    'uses' => 'CheckoutController@checkout'
+]);
 
 // Authentication routes...
 Route::group(['namespace' => 'Auth', 'prefix' => 'auth'], function()

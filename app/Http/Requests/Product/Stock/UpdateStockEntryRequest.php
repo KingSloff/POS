@@ -24,8 +24,8 @@ class UpdateStockEntryRequest extends Request
     public function rules()
     {
         return [
-            'amount' => 'integer|min:1',
-            'cost' => 'numeric|min:0.001'
+            'amount' => 'required|integer|min:1',
+            'cost' => 'required|numeric|min:0.001'
         ];
     }
 }
