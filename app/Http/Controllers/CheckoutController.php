@@ -8,7 +8,6 @@ use App\Checkout;
 use App\Http\Requests\CartItem\CreateCartItemRequest;
 use App\Http\Requests\CartItem\UpdateCartItemRequest;
 use App\Product;
-use Cache;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -22,15 +21,9 @@ class CheckoutController extends Controller
      */
     public function index()
     {
-        $products = Cache::rememberForever('products', function()
-        {
-            return Product::get();
-        });
+        $products = Product::get();
 
-        $cart = Cache::rememberForever('first_cart', function()
-        {
-            return Cart::with('cart_items.product.stocks')->first();
-        });
+        $cart = Cart::with('cart_items.product.stocks')->first();
 
         $cartItems = $cart->cart_items;
 
@@ -45,12 +38,7 @@ class CheckoutController extends Controller
      */
     public function store(CreateCartItemRequest $request)
     {
-        $cart = Cache::rememberForever('first_cart', function()
-        {
-            return Cart::with('cart_items.product.stocks')->first();
-        });
-
-        Cache::flush();
+        $cart = Cart::with('cart_items.product.stocks')->first();
 
         foreach($cart->cart_items as $cartItem)
         {
@@ -84,8 +72,6 @@ class CheckoutController extends Controller
 
         $cartItem->save();
 
-        Cache::flush();
-
         return redirect()->route('checkout.index');
     }
 
@@ -98,8 +84,6 @@ class CheckoutController extends Controller
     public function destroy($cartItem)
     {
         $cartItem->delete();
-
-        Cache::flush();
 
         return redirect()->route('checkout.index');
     }
@@ -162,8 +146,6 @@ class CheckoutController extends Controller
 
             $cartItem->delete();
         }
-
-        Cache::flush();
 
         return redirect()->route('checkout.index')->with('success', 'Purchase made');
     }

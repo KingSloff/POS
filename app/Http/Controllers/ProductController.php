@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Product;
-use Cache;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -21,10 +20,7 @@ class ProductController extends Controller
     {
         $this->authorize(new Product());
 
-        $products = Cache::rememberForever('products', function()
-        {
-            return Product::get();
-        });
+        $products = Product::get();
 
         return view('products.index', compact('products'));
     }
@@ -56,8 +52,6 @@ class ProductController extends Controller
             'price' => $request->price,
             'target_profit_percentage' => $request->target_profit_percentage,
         ]);
-
-        Cache::flush();
 
         return redirect()->route('product.index')->with('success', 'Product successfully created');
     }
@@ -105,8 +99,6 @@ class ProductController extends Controller
 
         $product->save();
 
-        Cache::flush();
-
         return redirect()->route('product.show', compact('product'));
     }
 
@@ -121,8 +113,6 @@ class ProductController extends Controller
         $this->authorize($product);
 
         $product->delete();
-
-        Cache::flush();
 
         return redirect()->route('product.index');
     }

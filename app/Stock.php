@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Cache;
 use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model
@@ -36,10 +35,7 @@ class Stock extends Model
      */
     public function profitPercentage()
     {
-        $product = Cache::rememberForever('stock_'.$this->id.'product', function()
-        {
-            return $this->product;
-        });
+        $product = $this->product;
 
         return ($product->price - $this->cpu()) / $this->cpu() * 100;
     }
