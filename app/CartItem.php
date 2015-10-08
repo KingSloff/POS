@@ -28,11 +28,6 @@ class CartItem extends Model
         return $this->amount * $this->product->price;
     }
 
-    public function prettyTotal()
-    {
-        return Services::displayAmount($this->total());
-    }
-
     /**
      * A cart item refers to one product
      */

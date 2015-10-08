@@ -31,11 +31,6 @@ class Stock extends Model
         return $this->cost / $this->amount;
     }
 
-    public function prettyCpu()
-    {
-        return Services::displayAmount($this->cpu());
-    }
-
     /**
      * Profit percentage
      */
@@ -49,16 +44,19 @@ class Stock extends Model
         return ($product->price - $this->cpu()) / $this->cpu() * 100;
     }
 
-    public function prettyProfitPercentage()
-    {
-        return Services::displayAmount($this->profitPercentage()).'%';
-    }
-
     /**
      * A stock entry belongs to a single product
      */
     public function product()
     {
         return $this->belongsTo('App\Product');
+    }
+
+    /**
+     * Get only elements in stock
+     */
+    public function scopeHasStock($query)
+    {
+        return $query->where('in_stock', '>', 0);
     }
 }

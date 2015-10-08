@@ -2,6 +2,8 @@
 
 @section('title', 'Product | '.$product->name)
 
+@inject('services', 'App\Services')
+
 @section('body')
     <div>
         <h2>
@@ -26,28 +28,28 @@
             <tbody>
                 <tr>
                     <td><strong>Price</strong></td>
-                    <td>{{$product->price}}</td>
+                    <td>{{$services->displayCurrency($product->price)}}</td>
 
                     <td><strong>Suggested Price</strong></td>
-                    <td>{{$product->suggestedPrice()}}</td>
+                    <td>{{$services->displayCurrency($product->suggestedPrice())}}</td>
                 </tr>
                 <tr>
                     <td><strong>Profit Percentage</strong></td>
-                    <td>{{$product->prettyProfitPercentage()}}</td>
+                    <td>{{$services->displayPercentage($product->profitPercentage())}}</td>
 
                     <td><strong>Stock</strong></td>
                     <td>{{$product->inStock()}}</td>
                 </tr>
                 <tr>
                     <td><strong>Profit Made</strong></td>
-                    <td>{{$product->prettyProfit()}}</td>
+                    <td>{{$services->displayCurrency($product->profit())}}</td>
 
                     <td><strong></strong></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td><strong>Profit Percentage Made</strong></td>
-                    <td>{{$product->prettyProfitPercentageMade()}}</td>
+                    <td>{{$services->displayPercentage($product->profitPercentageMade())}}</td>
 
                     <td><strong></strong></td>
                     <td></td>

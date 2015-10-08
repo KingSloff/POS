@@ -28,22 +28,12 @@ class Sale extends Model
         return $this->price * $this->amount;
     }
 
-    public function prettyTotal()
-    {
-        return Services::displayAmount($this->total());
-    }
-
     /**
      * Profit percentage made on purchase
      */
     public function profitPercentage()
     {
         return ($this->price - $this->cpu) / $this->cpu * 100;
-    }
-
-    public function prettyProfitPercentage()
-    {
-        return Services::displayAmount($this->profitPercentage()).'%';
     }
 
     /**

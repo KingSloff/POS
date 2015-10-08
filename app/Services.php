@@ -12,9 +12,31 @@ class Services extends Model
      * @param $number
      * @return string
      */
-    public static function displayAmount($number)
+    public function displayAmount($number)
     {
-        return number_format(round($number, 2), 2, '.', '');
+        return number_format(round($number, 2), 2, '.', ',');
+    }
+
+    /**
+     * Format a number as currency
+     *
+     * @param $number
+     * @return string
+     */
+    public function displayCurrency($number)
+    {
+        return 'R '.$this->displayAmount($number);
+    }
+
+    /**
+     * Format a number as a percentage
+     *
+     * @param $number
+     * @return string
+     */
+    public function displayPercentage($number)
+    {
+        return $this->displayAmount($number).' %';
     }
 
     /**

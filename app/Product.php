@@ -52,11 +52,6 @@ class Product extends Model
         return $smallest->profitPercentage();
     }
 
-    public function prettyProfitPercentage()
-    {
-        return Services::displayAmount($this->profitPercentage()).'%';
-    }
-
     /**
      * Stock with the lowest profit percentage
      *
@@ -66,7 +61,7 @@ class Product extends Model
     {
         $smallest = null;
 
-        foreach($this->stocks as $stock)
+        foreach($this->stocks()->hasStock()->get() as $stock)
         {
             if($smallest == null)
             {
@@ -91,7 +86,7 @@ class Product extends Model
             return 'N/A';
         }
 
-        return Services::displayAmount(($this->smallestProfitPercentageStock()->cpu() * $this->target_profit_percentage / 100) + $this->smallestProfitPercentageStock()->cpu());
+        return ($this->smallestProfitPercentageStock()->cpu() * $this->target_profit_percentage / 100) + $this->smallestProfitPercentageStock()->cpu();
     }
 
     /**
@@ -107,11 +102,6 @@ class Product extends Model
         }
 
         return $profit;
-    }
-
-    public function prettyProfit()
-    {
-        return Services::displayAmount($this->profit());
     }
 
     /**
@@ -132,11 +122,6 @@ class Product extends Model
         }
 
         return $this->profit() / $totalCost * 100;
-    }
-
-    public function prettyProfitPercentageMade()
-    {
-        return Services::displayAmount($this->profitPercentageMade()).'%';
     }
 
     /**

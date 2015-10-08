@@ -18,6 +18,8 @@
                 @can('index', new App\Product())
                 <li class="{{App\Services::isActive(Route::Current(), 'product')}}"><a href="{{route('product.index')}}">Products</a></li>
                 @endcan
+
+                <li class="{{App\Services::isActive(Route::Current(), 'report')}}"><a href="{{route('report.index')}}">Reports</a></li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">

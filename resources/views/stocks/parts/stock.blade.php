@@ -1,10 +1,12 @@
+@inject('services', 'App\Services')
+
 <tr>
     <td>{{$stock->created_at}}</td>
     <td>{{$stock->amount}}</td>
     <td>{{$stock->in_stock}}</td>
-    <td>{{$stock->cost}}</td>
-    <td>{{$stock->prettyCpu()}}</td>
-    <td>{{$stock->prettyProfitPercentage()}}</td>
+    <td>{{$services->displayCurrency($stock->cost)}}</td>
+    <td>{{$services->displayCurrency($stock->cpu())}}</td>
+    <td>{{$services->displayPercentage($stock->profitPercentage())}}</td>
     <td>
         <a href="{{route('product.stock.edit', ['product' => $stock->product, 'stock' => $stock])}}" class="btn btn-success">
             <span class="glyphicon glyphicon-pencil"></span>

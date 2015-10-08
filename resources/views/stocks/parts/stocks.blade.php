@@ -13,7 +13,7 @@
         </tr>
         </thead>
         <tbody>
-        @each('stocks.parts.stock', $product->stocks, 'stock')
+        @each('stocks.parts.stock', $product->stocks()->hasStock()->get(), 'stock')
         </tbody>
     </table>
 </div>

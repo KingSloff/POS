@@ -11,11 +11,14 @@
 |
 */
 
-Event::listen('illuminate.query', function($query, $params, $time, $conn)
+/*Event::listen('illuminate.query', function($query, $params, $time, $conn)
 {
     echo $query.'<br />';
-});
+});*/
 
+/**
+ * All checkout related routes
+ */
 Route::get('/', [
     'as' => 'checkout.index',
     'uses' => 'CheckoutController@index'
@@ -39,6 +42,19 @@ Route::delete('/{cartItem}', [
 Route::post('/checkout/{cart}', [
     'as' => 'checkout.checkout',
     'uses' => 'CheckoutController@checkout'
+]);
+
+/**
+ * All Reports related routes
+ */
+Route::get('/reports', [
+    'as' => 'report.index',
+    'uses' => 'ReportController@index'
+]);
+
+Route::get('/reports/stats', [
+    'as' => 'report.stats',
+    'uses' => 'ReportController@stats'
 ]);
 
 // Authentication routes...

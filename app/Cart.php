@@ -35,11 +35,6 @@ class Cart extends Model
         return $total;
     }
 
-    public function prettyTotal()
-    {
-        return Services::displayAmount($this->total());
-    }
-
     /**
      * A cart has many cart items
      */
