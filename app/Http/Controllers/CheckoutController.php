@@ -22,7 +22,7 @@ class CheckoutController extends Controller
     public function index()
     {
         $products = Product::get();
-        $cart = Cart::first();
+        $cart = Cart::with('cart_items.product.stocks')->first();
         $cartItems = $cart->cart_items;
 
         return view('checkout.index', compact('products', 'cart', 'cartItems'));

@@ -11,6 +11,11 @@
 |
 */
 
+Event::listen('illuminate.query', function($query, $params, $time, $conn)
+{
+    echo $query.'<br />';
+});
+
 Route::get('/', [
     'as' => 'checkout.index',
     'uses' => 'CheckoutController@index'
