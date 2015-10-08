@@ -47,13 +47,13 @@ class ProductController extends Controller
     {
         $this->authorize(new Product());
 
-        Product::create([
+        $product = Product::create([
             'name' => $request->name,
             'price' => $request->price,
             'target_profit_percentage' => $request->target_profit_percentage,
         ]);
 
-        return redirect()->route('product.index')->with('success', 'Product successfully created');
+        return redirect()->route('product.show', $product)->with('success', 'Product successfully created');
     }
 
     /**
