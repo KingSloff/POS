@@ -6,6 +6,7 @@ use App\Http\Requests\Product\Stock\CreateStockEntryRequest;
 use App\Http\Requests\Product\Stock\UpdateStockEntryRequest;
 use App\Product;
 use App\Stock;
+use Cache;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -38,6 +39,8 @@ class StockController extends Controller
             'cost' => $request->cost
         ]);
 
+        Cache::flush();
+
         return redirect()->route('product.show', $product);
     }
 
@@ -69,6 +72,8 @@ class StockController extends Controller
 
         $stock->save();
 
+        Cache::flush();
+
         return redirect()->route('product.show', $product);
     }
 
@@ -82,6 +87,8 @@ class StockController extends Controller
     public function destroy(Product $product, Stock $stock)
     {
         $stock->delete();
+
+        Cache::flush();
 
         return redirect()->route('product.show', $product);
     }
