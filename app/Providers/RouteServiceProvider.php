@@ -30,6 +30,7 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('stock', 'App\Stock');
         $router->model('cartItem', 'App\CartItem');
         $router->model('cart', 'App\Cart');
+        $router->model('order', 'App\Order');
     }
 
     /**

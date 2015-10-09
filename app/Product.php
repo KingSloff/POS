@@ -147,4 +147,12 @@ class Product extends Model
     {
         return $this->hasMany('App\CartItem');
     }
+
+    /**
+     * A product has many orders
+     */
+    public function orders()
+    {
+        return $this->hasMany('App\Order');
+    }
 }

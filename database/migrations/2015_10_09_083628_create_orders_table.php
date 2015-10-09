@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStocksTable extends Migration
+class CreateOrdersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateStocksTable extends Migration
      */
     public function up()
     {
-        Schema::create('stocks', function (Blueprint $table) {
+        Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
 
             $table->integer('product_id')->unsigned();
@@ -21,10 +21,7 @@ class CreateStocksTable extends Migration
                 ->on('products');
 
             $table->integer('amount')->unsigned();
-            $table->integer('in_stock')->unsigned();
             $table->decimal('cost');
-
-            $table->integer('lead_time')->unsigned()->nullable()->default(null);
 
             $table->timestamps();
         });
@@ -37,6 +34,6 @@ class CreateStocksTable extends Migration
      */
     public function down()
     {
-        Schema::drop('stocks');
+        Schema::drop('orders');
     }
 }

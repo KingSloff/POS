@@ -60,6 +60,7 @@
         <div>
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#stock">Stock</a></li>
+                <li><a data-toggle="tab" href="#orders">Orders</a></li>
                 <li><a data-toggle="tab" href="#sales">Sales</a></li>
             </ul>
             <div class="tab-content">
@@ -67,6 +68,12 @@
                     @include('stocks.parts.stocks')
 
                     <a href="{{route('product.stock.create', ['product' => $product])}}" class="btn btn-primary">Add Stock Entry</a>
+                </div>
+
+                <div id="orders" class="tab-pane fade">
+                    @include('orders.parts.orders')
+
+                    <a href="{{route('product.order.create', ['product' => $product])}}" class="btn btn-primary">Add Order</a>
                 </div>
 
                 <div id="sales" class="tab-pane fade">

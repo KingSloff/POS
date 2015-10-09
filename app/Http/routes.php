@@ -83,4 +83,13 @@ Route::group(['middleware' => 'auth'], function()
     Route::resource('product.stock', 'StockController',[
         'except' => ['index', 'show']
     ]);
+
+    Route::resource('product.order', 'OrderController',[
+        'except' => ['index', 'show']
+    ]);
+
+    Route::post('/product/{product}/order/{order}/complete', [
+        'as' => 'product.order.complete',
+        'uses' => 'OrderController@complete'
+    ]);
 });
