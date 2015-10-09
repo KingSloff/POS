@@ -44,15 +44,15 @@
                     <td><strong>Profit Made</strong></td>
                     <td>{{$services->displayCurrency($product->profit())}}</td>
 
-                    <td><strong></strong></td>
-                    <td></td>
+                    <td><strong>Average Daily Demand</strong></td>
+                    <td>{{$services->displayAmount($product->averageDailyDemand())}}</td>
                 </tr>
                 <tr>
                     <td><strong>Profit Percentage Made</strong></td>
                     <td>{{$services->displayPercentage($product->profitPercentageMade())}}</td>
 
-                    <td><strong></strong></td>
-                    <td></td>
+                    <td><strong>Reorder Point</strong></td>
+                    <td>{{$product->reorderPoint()}}</td>
                 </tr>
             </tbody>
         </table>

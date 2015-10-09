@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
@@ -122,6 +123,146 @@ class Product extends Model
         }
 
         return $this->profit() / $totalCost * 100;
+    }
+
+    /**
+     * Purchases per day
+     */
+    public function purchasesPerDay()
+    {
+        $sales = $this->sales;
+
+        if(empty($sales[0]))
+        {
+            return null;
+        }
+
+        $dayOne = Carbon::parse($sales[0]->created_at);
+
+        $purchasesPerDay = [];
+
+        foreach($sales as $sale)
+        {
+            $day = $dayOne->diffInDays(Carbon::parse($sale->created_at));
+
+            if(empty($purchasesPerDay[$day]))
+            {
+                $purchasesPerDay[$day] = $sale->amount;
+            }
+            else
+            {
+                $purchasesPerDay[$day] += $sale->amount;
+            }
+        }
+
+        for($count = 0; $count < $dayOne->diffInDays(Carbon::now()); $count++)
+        {
+            if(empty($purchasesPerDay[$count]))
+            {
+                $purchasesPerDay[$count] = 0;
+            }
+        }
+
+        return $purchasesPerDay;
+    }
+
+    /**
+     * Average daily demand
+     */
+    public function averageDailyDemand()
+    {
+        $purchasesPerDay = $this->purchasesPerDay();
+
+        if($purchasesPerDay == null)
+        {
+            return 0;
+        }
+
+        return array_sum($purchasesPerDay) / count($purchasesPerDay);
+    }
+
+    /**
+     * Standard deviation of daily demand
+     */
+    public function sdDailyDemand()
+    {
+        $purchasesPerDay = $this->purchasesPerDay();
+
+        if($purchasesPerDay == null)
+        {
+            return 0;
+        }
+
+        return Services::stats_standard_deviation($purchasesPerDay);
+    }
+
+    /**
+     * Lead times
+     */
+    public function leadTimes()
+    {
+        $stocks = $this->stocks;
+
+        if(empty($stocks[0]))
+        {
+            return null;
+        }
+
+        $leadTimes = [];
+
+        foreach($stocks as $stock)
+        {
+            if($stock->lead_time != null)
+            {
+                array_push($leadTimes, $stock->lead_time);
+            }
+        }
+
+        return $leadTimes;
+    }
+
+    /**
+     * Average lead time
+     */
+    public function averageLeadTime()
+    {
+        $leadTimes = $this->leadTimes();
+
+        if($leadTimes == null)
+        {
+            return 0;
+        }
+
+        return array_sum($leadTimes) / count($leadTimes);
+    }
+
+    /**
+     * Standard deviation of lead time
+     */
+    public function sdLeadTime()
+    {
+        $leadTimes = $this->leadTimes();
+
+        if($leadTimes == null)
+        {
+            return 0;
+        }
+
+        return Services::stats_standard_deviation($leadTimes);
+    }
+
+    /**
+     * Reorder point
+     */
+    public function reorderPoint()
+    {
+        $result =
+            ($this->averageDailyDemand() * $this->averageLeadTime()) +
+            (Services::normSInv(0.95) * (
+                sqrt( ($this->averageLeadTime() * pow($this->sdDailyDemand(), 2)) + (pow($this->averageDailyDemand(), 2) * pow($this->sdLeadTime(), 2)) )
+            ));
+
+        return ceil($result);
     }
 
     /**
