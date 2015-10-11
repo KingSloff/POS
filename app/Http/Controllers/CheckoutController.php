@@ -11,6 +11,7 @@ use App\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Mail;
 
 class CheckoutController extends Controller
 {
@@ -96,6 +97,8 @@ class CheckoutController extends Controller
      */
     public function checkout(Cart $cart)
     {
+        $productsBelowROP = [];
+
         foreach($cart->cart_items as $cartItem)
         {
             $numberToDeduct = $cartItem->amount;
@@ -106,6 +109,18 @@ class CheckoutController extends Controller
             {
                 return redirect()->route('checkout.index')->withErrors('Not enough of product: '.$product->name);
             }
+
+            if($product->inStock() < $product->reorderPoint())
+            {
+                array_push($productsBelowROP, $product->name);
+            }
+        }
+
+        foreach($cart->cart_items as $cartItem)
+        {
+            $numberToDeduct = $cartItem->amount;
+
+            $product = $cartItem->product;
 
             $stocks = $product->stocks;
 
@@ -145,6 +160,22 @@ class CheckoutController extends Controller
             }
 
             $cartItem->delete();
+        }
+
+        if(!empty($productsBelowROP))
+        {
+            $message = 'The following products are below the reorder point: ';
+
+            foreach($productsBelowROP as $productBelowROP)
+            {
+                $message .= $productBelowROP.', ';
+            }
+
+            Mail::raw($message, function($message)
+            {
+                $message->from('ettpitts@gmail.com', 'Ettienne Pitts');
+                $message->to('ettpitts2@gmail.com', 'Ettienne Pitts');
+            });
         }
 
         return redirect()->route('checkout.index')->with('success', 'Purchase made');
