@@ -1,7 +1,7 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "name": "king-sloff/pos",
+    "description": "Point of sale system",
+    "keywords": ["pos", "point of sale"],
     "license": "MIT",
     "type": "project",
     "require": {
