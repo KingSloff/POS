@@ -8,6 +8,7 @@ use App\Checkout;
 use App\Http\Requests\CartItem\CreateCartItemRequest;
 use App\Http\Requests\CartItem\UpdateCartItemRequest;
 use App\Product;
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -97,8 +98,6 @@ class CheckoutController extends Controller
      */
     public function checkout(Cart $cart)
     {
-        $productsBelowROP = [];
-
         foreach($cart->cart_items as $cartItem)
         {
             $numberToDeduct = $cartItem->amount;
@@ -109,74 +108,56 @@ class CheckoutController extends Controller
             {
                 return redirect()->route('checkout.index')->withErrors('Not enough of product: '.$product->name);
             }
-
-            if($product->inStock() < $product->reorderPoint())
-            {
-                array_push($productsBelowROP, $product->name);
-            }
         }
 
-        foreach($cart->cart_items as $cartItem)
+        DB::transaction(function() use($cart)
         {
-            $numberToDeduct = $cartItem->amount;
-
-            $product = $cartItem->product;
-
-            $stocks = $product->stocks;
-
-            foreach($stocks as $stock)
+            foreach($cart->cart_items as $cartItem)
             {
-                if($stock->in_stock == 0)
+                $numberToDeduct = $cartItem->amount;
+
+                $product = $cartItem->product;
+
+                $stocks = $product->stocks()->hasStock()->get();
+
+                foreach($stocks as $stock)
                 {
-                    continue;
+                    if($stock->in_stock == 0)
+                    {
+                        continue;
+                    }
+                    if($stock->in_stock - $numberToDeduct >= 0)
+                    {
+                        $stock->in_stock -= $numberToDeduct;
+
+                        $stock->save();
+
+                        $product->sales()->create([
+                            'price' => $product->price,
+                            'amount' => $numberToDeduct,
+                            'cpu' => $stock->cpu()
+                        ]);
+
+                        break;
+                    }
+                    else
+                    {
+                        $product->sales()->create([
+                            'price' => $product->price,
+                            'amount' => $stock->in_stock,
+                            'cpu' => $stock->cpu()
+                        ]);
+
+                        $numberToDeduct -= $stock->in_stock;
+
+                        $stock->in_stock = 0;
+                        $stock->save();
+                    }
                 }
-                if($stock->in_stock - $numberToDeduct >= 0)
-                {
-                    $stock->in_stock -= $numberToDeduct;
 
-                    $stock->save();
-
-                    $product->sales()->create([
-                        'price' => $product->price,
-                        'amount' => $numberToDeduct,
-                        'cpu' => $stock->cpu()
-                    ]);
-
-                    break;
-                }
-                else
-                {
-                    $product->sales()->create([
-                        'price' => $product->price,
-                        'amount' => $stock->in_stock,
-                        'cpu' => $stock->cpu()
-                    ]);
-
-                    $numberToDeduct -= $stock->in_stock;
-
-                    $stock->in_stock = 0;
-                    $stock->save();
-                }
+                $cartItem->delete();
             }
-
-            $cartItem->delete();
-        }
-
-        if(!empty($productsBelowROP))
-        {
-            $message = 'The following products are below the reorder point: ';
-
-            foreach($productsBelowROP as $productBelowROP)
-            {
-                $message .= $productBelowROP.', ';
-            }
-
-            Mail::raw($message, function($message)
-            {
-                $message->from('ettpitts@gmail.com', 'Ettienne Pitts');
-                $message->to('ettpitts2@gmail.com', 'Ettienne Pitts');
-            });
-        }
+        });
 
         return redirect()->route('checkout.index')->with('success', 'Purchase made');
     }

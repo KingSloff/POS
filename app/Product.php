@@ -28,7 +28,7 @@ class Product extends Model
     {
         $count = 0;
 
-        foreach($this->stocks as $stock)
+        foreach($this->stocks()->hasStock()->get() as $stock)
         {
             $count += $stock->in_stock;
         }
@@ -62,7 +62,7 @@ class Product extends Model
     {
         $smallest = null;
 
-        foreach($this->stocks()->hasStock()->get() as $stock)
+        foreach($this->stocks()->with('product')->hasStock()->get() as $stock)
         {
             if($smallest == null)
             {
@@ -82,12 +82,14 @@ class Product extends Model
      */
     public function suggestedPrice()
     {
-        if($this->smallestProfitPercentageStock() == null)
+        $smallest = $this->smallestProfitPercentageStock();
+
+        if($smallest == null)
         {
             return 'N/A';
         }
 
-        return ($this->smallestProfitPercentageStock()->cpu() * $this->target_profit_percentage / 100) + $this->smallestProfitPercentageStock()->cpu();
+        return ($smallest->cpu() * $this->target_profit_percentage / 100) + $smallest->cpu();
     }
 
     /**

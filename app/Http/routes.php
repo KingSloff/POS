@@ -13,7 +13,7 @@
 
 /*Event::listen('illuminate.query', function($query, $params, $time, $conn)
 {
-    echo $query.'<br />';
+    echo $query.'<br />'.implode(' ', $params).'<br />';
 });*/
 
 /**
