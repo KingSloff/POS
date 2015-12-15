@@ -92,4 +92,6 @@ Route::group(['middleware' => 'auth'], function()
         'as' => 'product.order.complete',
         'uses' => 'OrderController@complete'
     ]);
+
+    Route::resource('user', 'UserController');
 });

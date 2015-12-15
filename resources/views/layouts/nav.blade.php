@@ -19,6 +19,10 @@
                 <li class="{{App\Services::isActive(Route::Current(), 'product')}}"><a href="{{route('product.index')}}">Products</a></li>
                 @endcan
 
+                @can('index', new App\User())
+                <li class="{{App\Services::isActive(Route::Current(), 'user')}}"><a href="{{route('user.index')}}">Users</a></li>
+                @endcan
+
                 <li class="{{App\Services::isActive(Route::Current(), 'report')}}"><a href="{{route('report.index')}}">Reports</a></li>
             </ul>
 
