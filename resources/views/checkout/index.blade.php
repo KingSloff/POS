@@ -88,6 +88,18 @@
     <div class="col-sm-2">
         {!! Form::open(['route' => ['checkout.checkout', $cart]]) !!}
 
+        <div class="form-group">
+            <label for="user_id">User</label>
+            <select name="user_id" class="form-control">
+                <option selected disabled>Please select a user</option>
+                @foreach($users as $user)
+                    <option value="{{$user->id}}">
+                        {{$user->name}}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
         <button type="submit" class="btn btn-primary btn-block">Checkout</button>
 
         {!! Form::close() !!}

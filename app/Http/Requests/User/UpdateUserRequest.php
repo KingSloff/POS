@@ -26,6 +26,7 @@ class UpdateUserRequest extends Request
         return [
             'name' => 'required',
             'email' => 'required|email',
+            'balance' => 'required|numeric',
             'password' => 'required_with:password_confirmation',
             'password_confirmation' => 'required_with:password|same:password'
         ];

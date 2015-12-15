@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Cart;
 
 use App\Http\Requests\Request;
 
-class CreateUserRequest extends Request
+class CheckoutRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,7 @@ class CreateUserRequest extends Request
     public function rules()
     {
         return [
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'balance' => 'required|numeric',
-            'password' => 'required|confirmed'
+            'user_id' => 'required|exists:users,id'
         ];
     }
 }

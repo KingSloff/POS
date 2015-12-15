@@ -50,6 +50,7 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'balance' => $request->balance,
             'password' => bcrypt($request->password)
         ]);
 
@@ -66,7 +67,9 @@ class UserController extends Controller
     {
         $this->authorize($user);
 
-        return view('users.show', compact('user'));
+        $sales = $user->sales;
+
+        return view('users.show', compact('user', 'sales'));
     }
 
     /**
@@ -98,6 +101,7 @@ class UserController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->balance = $request->balance;
 
         $user->save();
 

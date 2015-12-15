@@ -2,6 +2,8 @@
 
 @section('title', 'User | '.$user->name)
 
+@inject('services', 'App\Services')
+
 @section('body')
     <div>
         <h2>
@@ -31,7 +33,25 @@
                     <td><strong>Email</strong></td>
                     <td>{{$user->email}}</td>
                 </tr>
+                <tr>
+                    <td><strong>Balance</strong></td>
+                    <td>{{$services->displayCurrency($user->balance)}}</td>
+
+                    <td><strong></strong></td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
+
+        <div>
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#sales">Sales</a></li>
+            </ul>
+            <div class="tab-content">
+                <div id="sales" class="tab-pane fade in active">
+                    @include('sales.parts.user-sales')
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

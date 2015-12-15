@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Cart;
 use App\CartItem;
 use App\Checkout;
+use App\Http\Requests\Cart\CheckoutRequest;
 use App\Http\Requests\CartItem\CreateCartItemRequest;
 use App\Http\Requests\CartItem\UpdateCartItemRequest;
 use App\Product;
+use App\User;
 use DB;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -24,12 +26,13 @@ class CheckoutController extends Controller
     public function index()
     {
         $products = Product::get();
+        $users = User::all();
 
         $cart = Cart::with('cart_items.product.stocks')->first();
 
         $cartItems = $cart->cart_items;
 
-        return view('checkout.index', compact('products', 'cart', 'cartItems'));
+        return view('checkout.index', compact('products', 'cart', 'cartItems', 'users'));
     }
 
     /**
@@ -93,10 +96,11 @@ class CheckoutController extends Controller
     /**
      * Checkout event
      *
+     * @param CheckoutRequest $request
      * @param Cart $cart
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function checkout(Cart $cart)
+    public function checkout(CheckoutRequest $request, Cart $cart)
     {
         foreach($cart->cart_items as $cartItem)
         {
@@ -110,13 +114,17 @@ class CheckoutController extends Controller
             }
         }
 
-        DB::transaction(function() use($cart)
+        DB::transaction(function() use($request, $cart)
         {
+            $user = User::findOrFail($request->user_id);
+
             foreach($cart->cart_items as $cartItem)
             {
                 $numberToDeduct = $cartItem->amount;
 
                 $product = $cartItem->product;
+
+                $user->balance -= ($product->price * $numberToDeduct);
 
                 $stocks = $product->stocks()->hasStock()->get();
 
@@ -135,7 +143,8 @@ class CheckoutController extends Controller
                         $product->sales()->create([
                             'price' => $product->price,
                             'amount' => $numberToDeduct,
-                            'cpu' => $stock->cpu()
+                            'cpu' => $stock->cpu(),
+                            'user_id' => $request->user_id
                         ]);
 
                         break;
@@ -157,6 +166,8 @@ class CheckoutController extends Controller
 
                 $cartItem->delete();
             }
+
+            $user->save();
         });
 
         return redirect()->route('checkout.index')->with('success', 'Purchase made');

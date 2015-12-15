@@ -43,4 +43,12 @@ class Sale extends Model
     {
         return $this->belongsTo('App\Product');
     }
+
+    /**
+     * A sale belongs to a user
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

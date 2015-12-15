@@ -9,6 +9,11 @@
 </div>
 
 <div class="form-group">
+    <label for="balance">Balance</label>
+    {!! Form::text('balance', null, ['class' => 'form-control']) !!}
+</div>
+
+<div class="form-group">
     <label for="password">Password</label>
     {!! Form::password('password', ['class' => 'form-control']) !!}
 </div>
