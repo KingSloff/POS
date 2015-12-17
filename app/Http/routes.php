@@ -19,43 +19,45 @@
 /**
  * All checkout related routes
  */
-Route::get('/', [
-    'as' => 'checkout.index',
-    'uses' => 'CheckoutController@index'
-]);
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/', [
+        'as' => 'checkout.index',
+        'uses' => 'CheckoutController@index'
+    ]);
 
-Route::post('/', [
-    'as' => 'checkout.store',
-    'uses' => 'CheckoutController@store'
-]);
+    Route::post('/', [
+        'as' => 'checkout.store',
+        'uses' => 'CheckoutController@store'
+    ]);
 
-Route::put('/{cartItem}', [
-    'as' => 'checkout.update',
-    'uses' => 'CheckoutController@update'
-]);
+    Route::put('/{cartItem}', [
+        'as' => 'checkout.update',
+        'uses' => 'CheckoutController@update'
+    ]);
 
-Route::delete('/{cartItem}', [
-    'as' => 'checkout.destroy',
-    'uses' => 'CheckoutController@destroy'
-]);
+    Route::delete('/{cartItem}', [
+        'as' => 'checkout.destroy',
+        'uses' => 'CheckoutController@destroy'
+    ]);
 
-Route::post('/checkout/{cart}', [
-    'as' => 'checkout.checkout',
-    'uses' => 'CheckoutController@checkout'
-]);
+    Route::post('/checkout/{cart}', [
+        'as' => 'checkout.checkout',
+        'uses' => 'CheckoutController@checkout'
+    ]);
 
-/**
- * All Reports related routes
- */
-Route::get('/reports', [
-    'as' => 'report.index',
-    'uses' => 'ReportController@index'
-]);
+    /**
+     * All Reports related routes
+     */
+    Route::get('/reports', [
+        'as' => 'report.index',
+        'uses' => 'ReportController@index'
+    ]);
 
-Route::get('/reports/stats', [
-    'as' => 'report.stats',
-    'uses' => 'ReportController@stats'
-]);
+    Route::get('/reports/stats', [
+        'as' => 'report.stats',
+        'uses' => 'ReportController@stats'
+    ]);
+});
 
 // Authentication routes...
 Route::group(['namespace' => 'Auth', 'prefix' => 'auth'], function()
