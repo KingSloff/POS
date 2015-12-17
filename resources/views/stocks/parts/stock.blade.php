@@ -1,7 +1,7 @@
 @inject('services', 'App\Services')
 
 <tr>
-    <td>{{$stock->created_at}}</td>
+    <td>{{$stock->created_at->timezone(auth()->user()->timezone)}}</td>
     <td>{{$stock->amount}}</td>
     <td>{{$stock->in_stock}}</td>
     <td>{{$services->displayCurrency($stock->cost)}}</td>
