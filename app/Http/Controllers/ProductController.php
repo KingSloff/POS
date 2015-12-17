@@ -20,7 +20,7 @@ class ProductController extends Controller
     {
         $this->authorize(new Product());
 
-        $products = Product::get();
+        $products = Product::sortable()->get();
 
         return view('products.index', compact('products'));
     }

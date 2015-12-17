@@ -6,7 +6,8 @@
         </colgroup>
         <thead>
         <tr>
-            <td><strong>Product</strong></td> <td><strong>Name</strong></td>
+            <td><strong>{!! \App\Traits\SortableTrait::link_to_sorting_action('id', 'Product') !!}</strong></td>
+            <td><strong>{!! \App\Traits\SortableTrait::link_to_sorting_action('name') !!}</strong></td>
         </tr>
         </thead>
         <tbody>

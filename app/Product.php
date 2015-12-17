@@ -2,11 +2,14 @@
 
 namespace App;
 
+use App\Traits\SortableTrait;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    use SortableTrait;
+
     /**
      * The table associated with the model.
      *

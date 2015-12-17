@@ -20,7 +20,7 @@ class UserController extends Controller
     {
         $this->authorize(new User());
 
-        $users = User::all();
+        $users = User::sortable()->get();
 
         return view('users.index', compact('users'));
     }
