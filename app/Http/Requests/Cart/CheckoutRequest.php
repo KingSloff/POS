@@ -24,7 +24,8 @@ class CheckoutRequest extends Request
     public function rules()
     {
         return [
-            'user_id' => 'required|exists:users,id'
+            'user_id' => 'required_without:cash|exists:users,id',
+            'amountGiven' => 'required_if:cash,on|numeric|min:0.001'
         ];
     }
 }

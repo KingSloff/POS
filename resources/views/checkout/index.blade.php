@@ -88,7 +88,16 @@
     <div class="col-sm-2">
         {!! Form::open(['route' => ['checkout.checkout', $cart]]) !!}
 
-        <div class="form-group">
+        <div>
+            {!! Form::checkbox('cash', 'on') !!} Cash
+        </div>
+
+        <div id="amountGivenDiv" class="form-group">
+            <label for="amountGiven">Amount Given</label>
+            {!! Form::text('amountGiven', null, ['class' => 'form-control']) !!}
+        </div>
+
+        <div id="userDiv" class="form-group">
             <label for="user_id">User</label>
             <select name="user_id" class="form-control">
                 <option selected disabled>Please select a user</option>

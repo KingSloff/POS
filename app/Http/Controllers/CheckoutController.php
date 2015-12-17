@@ -9,6 +9,7 @@ use App\Http\Requests\Cart\CheckoutRequest;
 use App\Http\Requests\CartItem\CreateCartItemRequest;
 use App\Http\Requests\CartItem\UpdateCartItemRequest;
 use App\Product;
+use App\Services;
 use App\User;
 use DB;
 use Illuminate\Http\Request;
@@ -114,9 +115,28 @@ class CheckoutController extends Controller
             }
         }
 
-        DB::transaction(function() use($request, $cart)
+        $cash = $request->has('cash');
+        $total = $cart->total();
+        $change = 0;
+
+        if($cash)
         {
-            $user = User::findOrFail($request->user_id);
+            $amountGiven = $request->amountGiven;
+
+            if($amountGiven < $total)
+            {
+                return redirect()->route('checkout.index')->withErrors('Not enough money given');
+            }
+            else
+            {
+                $change = $amountGiven - $total;
+            }
+        }
+
+        DB::transaction(function() use($request, $cart, $cash)
+        {
+            if (!$cash)
+                $user = User::findOrFail($request->user_id);
 
             foreach($cart->cart_items as $cartItem)
             {
@@ -124,7 +144,8 @@ class CheckoutController extends Controller
 
                 $product = $cartItem->product;
 
-                $user->balance -= ($product->price * $numberToDeduct);
+                if (!$cash)
+                    $user->balance -= ($product->price * $numberToDeduct);
 
                 $stocks = $product->stocks()->hasStock()->get();
 
@@ -140,12 +161,21 @@ class CheckoutController extends Controller
 
                         $stock->save();
 
-                        $product->sales()->create([
-                            'price' => $product->price,
-                            'amount' => $numberToDeduct,
-                            'cpu' => $stock->cpu(),
-                            'user_id' => $request->user_id
-                        ]);
+                        if (!$cash)
+                            $product->sales()->create([
+                                'price' => $product->price,
+                                'amount' => $numberToDeduct,
+                                'cpu' => $stock->cpu(),
+                                'user_id' => $request->user_id
+                            ]);
+                        else
+                        {
+                            $product->sales()->create([
+                                'price' => $product->price,
+                                'amount' => $numberToDeduct,
+                                'cpu' => $stock->cpu()
+                            ]);
+                        }
 
                         break;
                     }
@@ -167,9 +197,20 @@ class CheckoutController extends Controller
                 $cartItem->delete();
             }
 
-            $user->save();
+            if(!$cash)
+                $user->save();
         });
 
-        return redirect()->route('checkout.index')->with('success', 'Purchase made');
+        if($change == 0)
+        {
+            return redirect()->route('checkout.index')->with('success', 'Purchase made');
+        }
+        else
+        {
+            $service = new Services();
+
+            return redirect()->route('checkout.index')->with('success',
+                'Purchase made. Change: '.$service->displayCurrency($change));
+        }
     }
 }
