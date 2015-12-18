@@ -57,6 +57,11 @@ Route::group(['middleware' => 'auth'], function() {
         'as' => 'report.stats',
         'uses' => 'ReportController@stats'
     ]);
+
+    Route::get('/reports/debtors', [
+        'as' => 'report.debtors',
+        'uses' => 'ReportController@debtors'
+    ]);
 });
 
 // Authentication routes...

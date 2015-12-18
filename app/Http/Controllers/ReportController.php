@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -28,5 +29,15 @@ class ReportController extends Controller
         $report = new StatsReport();
 
         return view('reports.report.stats', compact('report'));
+    }
+
+    /**
+     * Display all the debtors
+     */
+    public function debtors()
+    {
+        $users = User::hasDebt()->sortable()->get();
+
+        return view('reports.report.debtors', compact('users'));
     }
 }

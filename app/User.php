@@ -53,4 +53,14 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->hasMany('App\Log');
     }
+
+    /**
+     * Filter users who have debt
+     * @param $query
+     * @return
+     */
+    public function scopeHasDebt($query)
+    {
+        return $query->where('balance', '<', 0);
+    }
 }

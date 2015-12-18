@@ -8,11 +8,14 @@
         <thead>
         <tr>
             <td><strong>Name</strong></td>
+            <td><strong>Name</strong></td>
         </tr>
         </thead>
         <tbody>
         <tr>
 		    <td><a href="{{route('report.stats')}}">Stats</a></td>
+
+            <td><a href="{{route('report.debtors')}}">Debtors</a></td>
 		</tr>
         </tbody>
     </table>
