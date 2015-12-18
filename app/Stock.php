@@ -27,7 +27,7 @@ class Stock extends Model
      */
     public function cpu()
     {
-        return $this->cost / $this->amount;
+        return round($this->cost / $this->amount, 2);
     }
 
     /**
