@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendDebtorEmail;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -39,5 +40,20 @@ class ReportController extends Controller
         $users = User::hasDebt()->sortable()->get();
 
         return view('reports.report.debtors', compact('users'));
+    }
+
+    /**
+     * Send email to debtors
+     */
+    public function sendDebtorEmail()
+    {
+        $users = User::hasDebt()->sortable()->get();
+
+        foreach($users as $user)
+        {
+            $this->dispatch(new SendDebtorEmail($user));
+        }
+
+        return redirect()->route('report.debtors')->with('success', 'Emails sent');
     }
 }

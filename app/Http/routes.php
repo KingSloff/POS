@@ -62,6 +62,11 @@ Route::group(['middleware' => 'auth'], function() {
         'as' => 'report.debtors',
         'uses' => 'ReportController@debtors'
     ]);
+
+    Route::get('/reports/debtors/send-email', [
+        'as' => 'report.debtors.send-email',
+        'uses' => 'ReportController@sendDebtorEmail'
+    ]);
 });
 
 // Authentication routes...
