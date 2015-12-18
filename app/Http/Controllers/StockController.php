@@ -9,6 +9,7 @@ use App\Stock;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
@@ -32,11 +33,18 @@ class StockController extends Controller
      */
     public function store(CreateStockEntryRequest $request, Product $product)
     {
-        $product->stocks()->create([
-            'amount' => $request->amount,
-            'in_stock' => $request->amount,
-            'cost' => $request->cost
-        ]);
+        $product = DB::transaction(function() use($request, $product)
+        {
+            $product->stocks()->create([
+                'amount' => $request->amount,
+                'in_stock' => $request->amount,
+                'cost' => $request->cost
+            ]);
+
+            $product->updateStock();
+
+            return $product;
+        });
 
         return redirect()->route('product.show', $product);
     }
@@ -63,11 +71,18 @@ class StockController extends Controller
      */
     public function update(UpdateStockEntryRequest $request, Product $product, Stock $stock)
     {
-        $stock->cost = $request->cost;
-        $stock->amount = $request->amount;
-        $stock->in_stock = $request->amount;
+        $product = DB::transaction(function() use($request, $product, $stock)
+        {
+            $stock->cost = $request->cost;
+            $stock->amount = $request->amount;
+            $stock->in_stock = $request->amount;
 
-        $stock->save();
+            $stock->save();
+
+            $product->updateStock();
+
+            return $product;
+        });
 
         return redirect()->route('product.show', $product);
     }
@@ -81,7 +96,14 @@ class StockController extends Controller
      */
     public function destroy(Product $product, Stock $stock)
     {
-        $stock->delete();
+        $product = DB::transaction(function() use($product, $stock)
+        {
+            $stock->delete();
+
+            $product->updateStock();
+
+            return $product;
+        });
 
         return redirect()->route('product.show', $product);
     }

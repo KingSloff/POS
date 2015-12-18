@@ -109,7 +109,7 @@ class CheckoutController extends Controller
 
             $product = $cartItem->product;
 
-            if($product->inStock() < $numberToDeduct)
+            if($product->in_stock < $numberToDeduct)
             {
                 return redirect()->route('checkout.index')->withErrors('Not enough of product: '.$product->name);
             }
@@ -193,6 +193,8 @@ class CheckoutController extends Controller
                         $stock->save();
                     }
                 }
+
+                $product->updateStock();
 
                 $cartItem->delete();
             }

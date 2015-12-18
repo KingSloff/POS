@@ -13,7 +13,7 @@
             <select name="product_id" class="form-control">
                 <option selected disabled>Please select a product</option>
                 @foreach($products as $product)
-                    @if($product->inStock() > 0)
+                    @if($product->in_stock > 0)
                     <option value="{{$product->id}}">
                         {{$product->name}}
                     </option>
@@ -62,7 +62,7 @@
                             {!! Form::close() !!}
                             </div>
                         </td>
-                        <td>{{$cartItem->product->inStock()}}</td>
+                        <td>{{$cartItem->product->in_stock}}</td>
                         <td>{{$services->displayCurrency($cartItem->product->price)}}</td>
                         <td>{{$services->displayCurrency($cartItem->total())}}</td>
                         <td>

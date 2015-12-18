@@ -38,7 +38,7 @@
                     <td>{{$services->displayPercentage($product->profitPercentage())}}</td>
 
                     <td><strong>Stock</strong></td>
-                    <td>{{$product->inStock()}}</td>
+                    <td>{{$product->in_stock}}</td>
                 </tr>
                 <tr>
                     <td><strong>Profit Made</strong></td>

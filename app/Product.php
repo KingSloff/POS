@@ -22,12 +22,14 @@ class Product extends Model
      *
      * @var array
      */
-    protected $guarded = [];
+    protected $guarded = [
+        'in_stock'
+    ];
 
     /**
      * Number of this product currently in stock
      */
-    public function inStock()
+    public function updateStock()
     {
         $count = 0;
 
@@ -36,7 +38,9 @@ class Product extends Model
             $count += $stock->in_stock;
         }
 
-        return $count;
+        $this->in_stock = $count;
+
+        $this->save();
     }
 
     /**
