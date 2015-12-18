@@ -62,7 +62,7 @@ class UserController extends Controller
             $services = new Services();
 
             $user->logs()->create([
-                'title' => 'User created',
+                'title' => 'User Created',
                 'description' => 'This user was created by '.auth()->user()->name,
                 'details' => "Name\t=>\t".$request->name.PHP_EOL.
                     "Email\t=>\t".$request->email.PHP_EOL.
