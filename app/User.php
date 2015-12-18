@@ -45,4 +45,12 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->hasMany('App\Sale');
     }
+
+    /**
+     * A user has many log entries
+     */
+    public function logs()
+    {
+        return $this->hasMany('App\Log');
+    }
 }

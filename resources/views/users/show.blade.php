@@ -63,10 +63,16 @@
         <div>
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#sales">Sales</a></li>
+
+                <li><a data-toggle="tab" href="#logs">Logs</a></li>
             </ul>
             <div class="tab-content">
                 <div id="sales" class="tab-pane fade in active">
                     @include('sales.parts.user-sales')
+                </div>
+
+                <div id="logs" class="tab-pane fade">
+                    @include('logs.parts.logs')
                 </div>
             </div>
         </div>

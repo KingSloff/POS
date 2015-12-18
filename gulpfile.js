@@ -16,7 +16,8 @@ elixir(function(mix) {
     mix.styles([
         'bootstrap.css',
         'bootstrap-theme.css',
-        'selectize.bootstrap3.css'
+        'selectize.bootstrap3.css',
+        'style.css'
     ]);
 
     mix.scripts([

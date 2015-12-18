@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Requests\User\CreateUserRequest;
 use App\Http\Requests\User\PayUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Services;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -48,12 +50,27 @@ class UserController extends Controller
     {
         $this->authorize(new User());
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'balance' => $request->balance,
-            'password' => bcrypt($request->password)
-        ]);
+        $user = DB::transaction(function() use($request)
+        {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'balance' => $request->balance,
+                'password' => bcrypt($request->password)
+            ]);
+
+            $services = new Services();
+
+            $user->logs()->create([
+                'title' => 'User created',
+                'description' => 'This user was created by '.auth()->user()->name,
+                'details' => "Name\t=>\t".$request->name.PHP_EOL.
+                    "Email\t=>\t".$request->email.PHP_EOL.
+                    "Balance\t=>\t".$services->displayCurrency($request->balance)
+            ]);
+
+            return $user;
+        });
 
         return redirect()->route('user.show', $user)->with('success', 'User created');
     }
@@ -71,7 +88,9 @@ class UserController extends Controller
         $sales = $user->sales;
         $sales->load('product');
 
-        return view('users.show', compact('user', 'sales'));
+        $logs = $user->logs;
+
+        return view('users.show', compact('user', 'sales', 'logs'));
     }
 
     /**
@@ -135,9 +154,20 @@ class UserController extends Controller
      */
     public function pay(PayUserRequest $request, User $user)
     {
-        $user->balance += $request->amount;
+        DB::transaction(function() use($request, $user)
+        {
+            $user->balance += $request->amount;
 
-        $user->save();
+            $user->save();
+
+            $services = new Services();
+
+            $user->logs()->create([
+                'title' => 'Amount Paid',
+                'description' => $user->name.' paid '.$services->displayCurrency($request->amount).'.',
+                'details' => "Balance\t=>\t".$services->displayCurrency($user->balance)
+            ]);
+        });
 
         return redirect()->route('user.show', $user)->with('success', 'Amount Paid');
     }

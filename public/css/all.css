@@ -7788,4 +7788,16 @@ fieldset[disabled] .btn-danger.active {
   -moz-border-radius: 0;
   border-radius: 0;
 }
+hr
+{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+pre
+{
+    overflow: auto;
+    word-wrap: normal;
+    white-space: pre;
+}
 /*# sourceMappingURL=all.css.map */

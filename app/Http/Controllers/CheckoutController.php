@@ -133,7 +133,7 @@ class CheckoutController extends Controller
             }
         }
 
-        DB::transaction(function() use($request, $cart, $cash)
+        DB::transaction(function() use($request, $cart, $cash, $total)
         {
             if (!$cash)
                 $user = User::findOrFail($request->user_id);
@@ -200,7 +200,17 @@ class CheckoutController extends Controller
             }
 
             if(!$cash)
+            {
                 $user->save();
+
+                $services = new Services();
+
+                $user->logs()->create([
+                    'title' => 'Goods Purchased',
+                    'description' => $services->displayCurrency($total).' worth of items have been purchased.',
+                    'details' => "Balance\t=>\t".$services->displayCurrency($user->balance)
+                ]);
+            }
         });
 
         if($change == 0)
