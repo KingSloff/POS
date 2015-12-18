@@ -68,6 +68,7 @@ class UserController extends Controller
         $this->authorize($user);
 
         $sales = $user->sales;
+        $sales->load('product');
 
         return view('users.show', compact('user', 'sales'));
     }
