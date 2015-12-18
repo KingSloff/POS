@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\PayUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\User;
 use Illuminate\Http\Request;
@@ -122,5 +123,22 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('user.index')->with('success', 'User deleted');
+    }
+
+    /**
+     * Pay an amount
+     *
+     * @param PayUserRequest $request
+     * @param  User $user
+     * @return \Illuminate\Http\Response
+     * @throws \Exception
+     */
+    public function pay(PayUserRequest $request, User $user)
+    {
+        $user->balance += $request->amount;
+
+        $user->save();
+
+        return redirect()->route('user.show', $user)->with('success', 'Amount Paid');
     }
 }

@@ -96,4 +96,9 @@ Route::group(['middleware' => 'auth'], function()
     ]);
 
     Route::resource('user', 'UserController');
+
+    Route::post('/user/{user}/pay', [
+        'as' => 'user.pay',
+        'uses' => 'UserController@pay'
+    ]);
 });

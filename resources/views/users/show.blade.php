@@ -43,6 +43,23 @@
             </tbody>
         </table>
 
+        <div class="row">
+            <div class="col-sm-3">
+                {!! Form::open(['route' => ['user.pay', $user]]) !!}
+
+                <div class="form-group">
+                    <label for="amount">Amount to Pay</label>
+                    {!! Form::text('amount', null, ['class' => 'form-control']) !!}
+                </div>
+
+                <button type="submit" class="btn btn-success">Pay</button>
+
+                {!! Form::close() !!}
+            </div>
+        </div>
+
+        <br/>
+
         <div>
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#sales">Sales</a></li>
