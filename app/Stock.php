@@ -36,8 +36,14 @@ class Stock extends Model
     public function profitPercentage()
     {
         $product = $this->product;
+        $cpu = $this->cpu();
 
-        return ($product->price - $this->cpu()) / $this->cpu() * 100;
+        if($cpu == 0)
+        {
+            return 'NA';
+        }
+
+        return ($product->price - $cpu) / $cpu * 100;
     }
 
     /**

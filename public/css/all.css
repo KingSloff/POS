@@ -7800,4 +7800,9 @@ pre
     word-wrap: normal;
     white-space: pre;
 }
+
+.space-bottom
+{
+    margin-bottom: 60px;
+}
 /*# sourceMappingURL=all.css.map */

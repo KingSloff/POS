@@ -181,11 +181,23 @@ class CheckoutController extends Controller
                     }
                     else
                     {
-                        $product->sales()->create([
-                            'price' => $product->price,
-                            'amount' => $stock->in_stock,
-                            'cpu' => $stock->cpu()
-                        ]);
+                        if(!$cash)
+                        {
+                            $product->sales()->create([
+                                'price' => $product->price,
+                                'amount' => $stock->in_stock,
+                                'cpu' => $stock->cpu(),
+                                'user_id' => $request->user_id
+                            ]);
+                        }
+                        else
+                        {
+                            $product->sales()->create([
+                                'price' => $product->price,
+                                'amount' => $stock->in_stock,
+                                'cpu' => $stock->cpu()
+                            ]);
+                        }
 
                         $numberToDeduct -= $stock->in_stock;
 

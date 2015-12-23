@@ -33,6 +33,11 @@ class Sale extends Model
      */
     public function profitPercentage()
     {
+        if($this->cpu == 0)
+        {
+            return 0;
+        }
+
         return ($this->price - $this->cpu) / $this->cpu * 100;
     }
 

@@ -92,6 +92,11 @@ Route::group(['middleware' => 'auth'], function()
 {
     Route::resource('product', 'ProductController');
 
+    Route::post('/product/{product}/writeOff', [
+        'as' => 'product.write-off',
+        'uses' => 'ProductController@writeOff'
+    ]);
+
     Route::resource('product.stock', 'StockController',[
         'except' => ['index', 'show']
     ]);

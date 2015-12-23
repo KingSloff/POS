@@ -48,7 +48,7 @@
                 {!! Form::open(['route' => ['user.pay', $user]]) !!}
 
                 <div class="form-group">
-                    <label for="amount">Amount to Pay</label>
+                    <label for="amountToPay">Amount to Pay</label>
                     {!! Form::text('amountToPay', null, ['class' => 'form-control']) !!}
                 </div>
 
@@ -61,7 +61,7 @@
                 {!! Form::open(['route' => ['user.loan', $user]]) !!}
 
                 <div class="form-group">
-                    <label for="amount">Amount to Loan</label>
+                    <label for="amountToLoan">Amount to Loan</label>
                     {!! Form::text('amountToLoan', null, ['class' => 'form-control']) !!}
                 </div>
 

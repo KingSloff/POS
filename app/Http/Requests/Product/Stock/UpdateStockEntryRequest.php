@@ -25,7 +25,7 @@ class UpdateStockEntryRequest extends Request
     {
         return [
             'amount' => 'required|integer|min:1',
-            'cost' => 'required|numeric|min:0.001'
+            'cost' => 'required|numeric|min:0'
         ];
     }
 }

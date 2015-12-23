@@ -57,6 +57,23 @@
             </tbody>
         </table>
 
+        <div class="row">
+            <div class="col-sm-3">
+                {!! Form::open(['route' => ['product.write-off', $product]]) !!}
+
+                <div class="form-group">
+                    <label for="amountToWriteOff">Amount to Write Off</label>
+                    {!! Form::text('amountToWriteOff', null, ['class' => 'form-control']) !!}
+                </div>
+
+                <button type="submit" class="btn btn-success">Write Off</button>
+
+                {!! Form::close() !!}
+            </div>
+        </div>
+
+        <br/>
+
         <div>
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#stock">Stock</a></li>

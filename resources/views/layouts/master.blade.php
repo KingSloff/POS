@@ -11,7 +11,7 @@
 
 @include('layouts.nav')
 
-<div class="container">
+<div class="container space-bottom">
     @include('success.success')
 
     @include('errors.errors')
