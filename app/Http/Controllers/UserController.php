@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Requests\User\LoanUserRequest;
 use App\Http\Requests\User\PayUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Services;
@@ -156,7 +157,7 @@ class UserController extends Controller
     {
         DB::transaction(function() use($request, $user)
         {
-            $user->balance += $request->amount;
+            $user->balance += $request->amountToPay;
 
             $user->save();
 
@@ -164,11 +165,38 @@ class UserController extends Controller
 
             $user->logs()->create([
                 'title' => 'Amount Paid',
-                'description' => $user->name.' paid '.$services->displayCurrency($request->amount).'.',
+                'description' => $user->name.' paid '.$services->displayCurrency($request->amountToPay).'.',
                 'details' => "Balance\t=>\t".$services->displayCurrency($user->balance)
             ]);
         });
 
         return redirect()->route('user.show', $user)->with('success', 'Amount Paid');
+    }
+
+    /**
+     * Loan an amount
+     *
+     * @param LoanUserRequest $request
+     * @param  User $user
+     * @return \Illuminate\Http\Response
+     */
+    public function loan(LoanUserRequest $request, User $user)
+    {
+        DB::transaction(function() use($request, $user)
+        {
+            $user->balance -= $request->amountToLoan;
+
+            $user->save();
+
+            $services = new Services();
+
+            $user->logs()->create([
+                'title' => 'Amount Loaned',
+                'description' => $services->displayCurrency($request->amountToLoan).' has been loaned.',
+                'details' => "Balance\t=>\t".$services->displayCurrency($user->balance)
+            ]);
+        });
+
+        return redirect()->route('user.show', $user)->with('success', 'Amount Loaned');
     }
 }

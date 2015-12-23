@@ -4,7 +4,7 @@ namespace App\Http\Requests\User;
 
 use App\Http\Requests\Request;
 
-class PayUserRequest extends Request
+class LoanUserRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class PayUserRequest extends Request
     public function rules()
     {
         return [
-            'amountToPay' => 'required|numeric|min:0.01',
+            'amountToLoan' => 'required|numeric|min:0.01',
         ];
     }
 }

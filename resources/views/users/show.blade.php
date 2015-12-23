@@ -49,10 +49,23 @@
 
                 <div class="form-group">
                     <label for="amount">Amount to Pay</label>
-                    {!! Form::text('amount', null, ['class' => 'form-control']) !!}
+                    {!! Form::text('amountToPay', null, ['class' => 'form-control']) !!}
                 </div>
 
                 <button type="submit" class="btn btn-success">Pay</button>
+
+                {!! Form::close() !!}
+            </div>
+
+            <div class="col-sm-3">
+                {!! Form::open(['route' => ['user.loan', $user]]) !!}
+
+                <div class="form-group">
+                    <label for="amount">Amount to Loan</label>
+                    {!! Form::text('amountToLoan', null, ['class' => 'form-control']) !!}
+                </div>
+
+                <button type="submit" class="btn btn-success">Loan</button>
 
                 {!! Form::close() !!}
             </div>

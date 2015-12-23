@@ -111,4 +111,9 @@ Route::group(['middleware' => 'auth'], function()
         'as' => 'user.pay',
         'uses' => 'UserController@pay'
     ]);
+
+    Route::post('/user/{user}/loan', [
+        'as' => 'user.loan',
+        'uses' => 'UserController@loan'
+    ]);
 });
