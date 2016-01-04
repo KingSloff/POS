@@ -7,7 +7,7 @@
 @section('body')
     <div>
         <h2>
-            {!! Form::open(['route' => ['user.destroy', $user], 'method' => 'delete']) !!}
+            {{ Form::open(['route' => ['user.destroy', $user], 'method' => 'delete']) }}
             <a href="{{route('user.index')}}" class="glyphicon glyphicon-chevron-left"></a>
             {{$user->name}}
 
@@ -15,7 +15,7 @@
                 <a href="{{route('user.edit', $user)}}" class="btn btn-primary">Edit</a>
                 <button type="submit" class="btn btn-danger">Delete</button>
             </div>
-            {!! Form::close() !!}
+            {{ Form::close() }}
         </h2>
 
         <table class="table table-striped">
@@ -45,29 +45,29 @@
 
         <div class="row">
             <div class="col-sm-3">
-                {!! Form::open(['route' => ['user.pay', $user]]) !!}
+                {{ Form::open(['route' => ['user.pay', $user]]) }}
 
                 <div class="form-group">
                     <label for="amountToPay">Amount to Pay</label>
-                    {!! Form::text('amountToPay', null, ['class' => 'form-control']) !!}
+                    {{ Form::text('amountToPay', null, ['class' => 'form-control']) }}
                 </div>
 
                 <button type="submit" class="btn btn-success">Pay</button>
 
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
 
             <div class="col-sm-3">
-                {!! Form::open(['route' => ['user.loan', $user]]) !!}
+                {{ Form::open(['route' => ['user.loan', $user]]) }}
 
                 <div class="form-group">
                     <label for="amountToLoan">Amount to Loan</label>
-                    {!! Form::text('amountToLoan', null, ['class' => 'form-control']) !!}
+                    {{ Form::text('amountToLoan', null, ['class' => 'form-control']) }}
                 </div>
 
                 <button type="submit" class="btn btn-success">Loan</button>
 
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
         </div>
 

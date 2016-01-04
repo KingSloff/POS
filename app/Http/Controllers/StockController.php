@@ -56,7 +56,7 @@ class StockController extends Controller
      * @param  Stock  $stock
      * @return \Illuminate\Http\Response
      */
-    public function edit($product, $stock)
+    public function edit(Product $product, Stock $stock)
     {
         return view('stocks.edit', compact('product', 'stock'));
     }

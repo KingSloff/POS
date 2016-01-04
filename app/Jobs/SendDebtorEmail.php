@@ -34,7 +34,7 @@ class SendDebtorEmail extends Job implements ShouldQueue
     {
         Mail::send('emails.debtor-email', ['user' => $this->user], function($message)
         {
-            $message->from(env('MAIL_USERNAME'), env('ROOT_USERNAME'));
+            $message->from(config('mail.username'), config('default.root_user.name'));
             $message->to($this->user->email, $this->user->name);
             $message->subject('Snoepie Skuld');
         });

@@ -3,7 +3,7 @@
 @section('title', 'Edit an Order')
 
 @section('body')
-    {!! Form::model($order, ['route' => ['product.order.update', $product, $order], 'method' => 'put']) !!}
+    {{ Form::model($order, ['route' => ['product.order.update', $product, $order], 'method' => 'put']) }}
 
     @include('orders.parts.order-fields')
 
@@ -12,5 +12,5 @@
         <a href="{{route('product.show', $product)}}" class="btn btn-default">Cancel</a>
     </div>
 
-    {!! Form::close() !!}
+    {{ Form::close() }}
 @endsection

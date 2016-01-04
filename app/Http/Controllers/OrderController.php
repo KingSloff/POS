@@ -7,6 +7,7 @@ use App\Http\Requests\Product\Order\UpdateOrderRequest;
 use App\Order;
 use App\Product;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -48,7 +49,7 @@ class OrderController extends Controller
      * @param  Order  $order
      * @return \Illuminate\Http\Response
      */
-    public function edit($product, $order)
+    public function edit(Product $product, Order $order)
     {
         return view('orders.edit', compact('product', 'order'));
     }
@@ -97,12 +98,19 @@ class OrderController extends Controller
         $dateOrdered = Carbon::parse($order->created_at);
         $lead_time = $dateOrdered->diffInDays(Carbon::now());
 
-        $product->stocks()->create([
-            'amount' => $order->amount,
-            'in_stock' => $order->amount,
-            'cost' => $order->cost,
-            'lead_time' => $lead_time
-        ]);
+        $product = DB::transaction(function() use($product, $order, $lead_time)
+        {
+            $product->stocks()->create([
+                'amount' => $order->amount,
+                'in_stock' => $order->amount,
+                'cost' => $order->cost,
+                'lead_time' => $lead_time
+            ]);
+
+            $product->updateStock();
+
+            return $product;
+        });
 
         $order->delete();
 

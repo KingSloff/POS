@@ -64,7 +64,7 @@ class ProductController extends Controller
      * @param  Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function show($product)
+    public function show(Product $product)
     {
         $this->authorize($product);
 
@@ -79,7 +79,7 @@ class ProductController extends Controller
      * @param  Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit($product)
+    public function edit(Product $product)
     {
         $this->authorize($product);
 
@@ -93,7 +93,7 @@ class ProductController extends Controller
      * @param  Product $product
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateProductRequest $request, $product)
+    public function update(UpdateProductRequest $request, Product $product)
     {
         $this->authorize($product);
 
@@ -112,7 +112,7 @@ class ProductController extends Controller
      * @param  Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy($product)
+    public function destroy(Product $product)
     {
         $this->authorize($product);
 
@@ -129,7 +129,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      * @throws \Exception
      */
-    public function writeOff(WriteOffProductRequest $request, $product)
+    public function writeOff(WriteOffProductRequest $request, Product $product)
     {
         $this->authorize($product);
 

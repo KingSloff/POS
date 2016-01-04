@@ -3,7 +3,7 @@
 @section('title', 'Edit a User')
 
 @section('body')
-    {!! Form::model($user, ['route' => ['user.update', $user], 'method' => 'put']) !!}
+    {{ Form::model($user, ['route' => ['user.update', $user], 'method' => 'put']) }}
 
     @include('users.parts.user-fields')
 
@@ -12,5 +12,5 @@
         <a href="{{route('user.show', $user)}}" class="btn btn-default">Cancel</a>
     </div>
 
-    {!! Form::close() !!}
+    {{ Form::close() }}
 @endsection

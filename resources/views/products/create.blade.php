@@ -3,7 +3,7 @@
 @section('title', 'Create a Product')
 
 @section('body')
-    {!! Form::open(['route' => 'product.store']) !!}
+    {{ Form::open(['route' => 'product.store']) }}
 
     @include('products.parts.product-fields')
 
@@ -12,5 +12,5 @@
         <a href="{{route('product.index')}}" class="btn btn-default">Cancel</a>
     </div>
 
-    {!! Form::close() !!}
+    {{ Form::close() }}
 @endsection

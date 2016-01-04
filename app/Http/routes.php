@@ -11,15 +11,10 @@
 |
 */
 
-/*Event::listen('illuminate.query', function($query, $params, $time, $conn)
-{
-    echo $query.'<br />'.implode(' ', $params).'<br />';
-});*/
-
-DB::listen(function($event){
+/*DB::listen(function($event){
     dump($event->sql);
     dump($event->bindings);
-});
+});*/
 
 /**
  * All checkout related routes

@@ -13,8 +13,8 @@
         </a>
     </td>
     <td>
-        {!! Form::open(['route' => ['product.stock.destroy', $stock->product, $stock], 'method' => 'delete']) !!}
+        {{ Form::open(['route' => ['product.stock.destroy', $stock->product, $stock], 'method' => 'delete']) }}
         <button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></button>
-        {!! Form::close() !!}
+        {{ Form::close() }}
     </td>
 </tr>

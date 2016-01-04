@@ -7,7 +7,7 @@
 @section('body')
     <div>
         <h2>
-            {!! Form::open(['route' => ['product.destroy', $product], 'method' => 'delete']) !!}
+            {{ Form::open(['route' => ['product.destroy', $product], 'method' => 'delete']) }}
             <a href="{{route('product.index')}}" class="glyphicon glyphicon-chevron-left"></a>
             {{$product->name}}
 
@@ -15,7 +15,7 @@
                 <a href="{{route('product.edit', $product)}}" class="btn btn-primary">Edit</a>
                 <button type="submit" class="btn btn-danger">Delete</button>
             </div>
-            {!! Form::close() !!}
+            {{ Form::close() }}
         </h2>
 
         <table class="table table-striped">
@@ -59,16 +59,16 @@
 
         <div class="row">
             <div class="col-sm-3">
-                {!! Form::open(['route' => ['product.write-off', $product]]) !!}
+                {{ Form::open(['route' => ['product.write-off', $product]]) }}
 
                 <div class="form-group">
                     <label for="amountToWriteOff">Amount to Write Off</label>
-                    {!! Form::text('amountToWriteOff', null, ['class' => 'form-control']) !!}
+                    {{ Form::text('amountToWriteOff', null, ['class' => 'form-control']) }}
                 </div>
 
                 <button type="submit" class="btn btn-success">Write Off</button>
 
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
         </div>
 

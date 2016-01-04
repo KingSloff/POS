@@ -6,7 +6,7 @@
 
 @section('body')
     <div class="col-sm-3">
-        {!! Form::open(['route' => 'checkout.store']) !!}
+        {{ Form::open(['route' => 'checkout.store']) }}
 
         <div class="form-group">
             <label for="item">Item</label>
@@ -24,7 +24,7 @@
 
         <button type="submit" class="btn btn-success">Add Item</button>
 
-        {!! Form::close() !!}
+        {{ Form::close() }}
     </div>
 
     <div class="col-sm-9">
@@ -47,32 +47,32 @@
                             {{$cartItem->amount}}
 
                             <div>
-                            {!! Form::open(['route' => ['checkout.update', $cartItem], 'method' => 'put', 'style' => 'display: inline-block;']) !!}
+                            {{ Form::open(['route' => ['checkout.update', $cartItem], 'method' => 'put', 'style' => 'display: inline-block;']) }}
 
                             <input type="hidden" name="amount" value="{{$cartItem->amount + 1}}" />
                             <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
 
-                            {!! Form::close() !!}
+                            {{ Form::close() }}
 
-                            {!! Form::open(['route' => ['checkout.update', $cartItem], 'method' => 'put', 'style' => 'display: inline-block;']) !!}
+                            {{ Form::open(['route' => ['checkout.update', $cartItem], 'method' => 'put', 'style' => 'display: inline-block;']) }}
 
                             <input type="hidden" name="amount" value="{{$cartItem->amount - 1}}" />
                             <button type="submit" class="btn btn-warning"><span class="glyphicon glyphicon-minus"></span></button>
 
-                            {!! Form::close() !!}
+                            {{ Form::close() }}
                             </div>
                         </td>
                         <td>{{$cartItem->product->in_stock}}</td>
                         <td>{{$services->displayCurrency($cartItem->product->price)}}</td>
                         <td>{{$services->displayCurrency($cartItem->total())}}</td>
                         <td>
-                            {!! Form::open(['route' => ['checkout.destroy', $cartItem], 'method' => 'delete']) !!}
+                            {{ Form::open(['route' => ['checkout.destroy', $cartItem], 'method' => 'delete']) }}
 
                             <button type="submit" class="btn btn-danger">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
 
-                            {!! Form::close() !!}
+                            {{ Form::close() }}
                         </td>
                     </tr>
                 @endforeach
@@ -86,15 +86,15 @@
     </div>
 
     <div class="col-sm-2">
-        {!! Form::open(['route' => ['checkout.checkout', $cart]]) !!}
+        {{ Form::open(['route' => ['checkout.checkout', $cart]]) }}
 
         <div>
-            {!! Form::checkbox('cash', 'on') !!} Cash
+            {{ Form::checkbox('cash', 'on') }} Cash
         </div>
 
         <div id="amountGivenDiv" class="form-group">
             <label for="amountGiven">Amount Given</label>
-            {!! Form::text('amountGiven', null, ['class' => 'form-control']) !!}
+            {{ Form::text('amountGiven', null, ['class' => 'form-control']) }}
         </div>
 
         <div id="userDiv" class="form-group">
@@ -111,6 +111,6 @@
 
         <button type="submit" class="btn btn-primary btn-block">Checkout</button>
 
-        {!! Form::close() !!}
+        {{ Form::close() }}
     </div>
 @endsection

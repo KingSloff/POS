@@ -3,7 +3,7 @@
 @section('title', 'Create a User')
 
 @section('body')
-    {!! Form::open(['route' => 'user.store']) !!}
+    {{ Form::open(['route' => 'user.store']) }}
 
     @include('users.parts.user-fields')
 
@@ -12,5 +12,5 @@
         <a href="{{route('user.index')}}" class="btn btn-default">Cancel</a>
     </div>
 
-    {!! Form::close() !!}
+    {{ Form::close() }}
 @endsection

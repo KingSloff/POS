@@ -3,7 +3,7 @@
 @section('title', 'Edit a Stock Entry')
 
 @section('body')
-    {!! Form::model($stock, ['route' => ['product.stock.update', $product, $stock], 'method' => 'put']) !!}
+    {{ Form::model($stock, ['route' => ['product.stock.update', $product, $stock], 'method' => 'put']) }}
 
     @include('stocks.parts.stock-fields')
 
@@ -12,5 +12,5 @@
         <a href="{{route('product.show', $product)}}" class="btn btn-default">Cancel</a>
     </div>
 
-    {!! Form::close() !!}
+    {{ Form::close() }}
 @endsection

@@ -87,7 +87,7 @@ class CheckoutController extends Controller
      * @param  CartItem  $cartItem
      * @return \Illuminate\Http\Response
      */
-    public function destroy($cartItem)
+    public function destroy(CartItem $cartItem)
     {
         $cartItem->delete();
 
