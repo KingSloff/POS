@@ -6,11 +6,10 @@ use App\Jobs\Job;
 use App\User;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendDebtorEmail extends Job implements SelfHandling, ShouldQueue
+class SendDebtorEmail extends Job implements ShouldQueue
 {
     use InteractsWithQueue, SerializesModels;
 

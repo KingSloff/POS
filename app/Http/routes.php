@@ -16,6 +16,11 @@
     echo $query.'<br />'.implode(' ', $params).'<br />';
 });*/
 
+DB::listen(function($event){
+    dump($event->sql);
+    dump($event->bindings);
+});
+
 /**
  * All checkout related routes
  */
