@@ -67,6 +67,11 @@ Route::group(['middleware' => ['auth', 'web']], function() {
         'as' => 'report.debtors.send-email',
         'uses' => 'ReportController@sendDebtorEmail'
     ]);
+
+    Route::get('/reports/trial-balance', [
+        'as' => 'report.trial-balance',
+        'uses' => 'ReportController@trialBalance'
+    ]);
 });
 
 // Authentication routes...

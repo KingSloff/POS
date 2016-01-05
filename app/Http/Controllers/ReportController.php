@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SendDebtorEmail;
+use App\Report\TrialBalanceReport;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -55,5 +56,15 @@ class ReportController extends Controller
         }
 
         return redirect()->route('report.debtors')->with('success', 'Emails sent');
+    }
+
+    /**
+     * Generate the trial balance
+     */
+    public function trialBalance()
+    {
+        $report = new TrialBalanceReport();
+
+        return view('reports.report.trial-balance', compact('report'));
     }
 }

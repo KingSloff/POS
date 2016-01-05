@@ -17,6 +17,11 @@
 
             <td><a href="{{route('report.debtors')}}">Debtors</a></td>
 		</tr>
+        <tr>
+            <td><a href="{{route('report.trial-balance')}}">Trial Balance</a></td>
+
+            <td></td>
+        </tr>
         </tbody>
     </table>
 </div>
