@@ -46,9 +46,15 @@
                     <td>{{$services->displayAmount($report->closing_inventory)}}</td>
                 </tr>
                 <tr>
-                    <td>Profit</td>
-                    <td>{{$services->displayAmount($report->profit)}}</td>
-                    <td></td>
+                    @if($report->profit >= 0)
+                        <td>Profit</td>
+                        <td>{{$services->displayAmount($report->profit)}}</td>
+                        <td></td>
+                    @else
+                        <td>Loss</td>
+                        <td></td>
+                        <td>{{$services->displayAmount(abs($report->profit))}}</td>
+                    @endif
                 </tr>
                 <tr>
                     <td><strong>Total</strong></td>

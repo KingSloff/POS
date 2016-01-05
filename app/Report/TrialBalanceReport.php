@@ -22,8 +22,18 @@ class TrialBalanceReport extends Report
         $this->purchases = $this->purchases();
         $this->profit = $this->profit();
 
-        $this->totalDebit = $this->sales + $this->closing_inventory;
-        $this->totalCredit = $this->opening_inventory + $this->purchases + $this->profit;
+        $this->totalDebit = $this->opening_inventory + $this->purchases;
+        $this->totalCredit = $this->sales + $this->closing_inventory;
+
+        if($this->profit >= 0)
+        {
+            $this->totalDebit += $this->profit;
+        }
+        else
+        {
+            $this->totalCredit += abs($this->profit);
+        }
+
 	}
 
     /**
