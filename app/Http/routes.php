@@ -19,7 +19,7 @@
 /**
  * All checkout related routes
  */
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => ['auth', 'web']], function() {
     Route::get('/', [
         'as' => 'checkout.index',
         'uses' => 'CheckoutController@index'
@@ -70,7 +70,7 @@ Route::group(['middleware' => 'auth'], function() {
 });
 
 // Authentication routes...
-Route::group(['namespace' => 'Auth', 'prefix' => 'auth'], function()
+Route::group(['namespace' => 'Auth', 'prefix' => 'auth', 'middleware' => 'web'], function()
 {
     Route::get('login', [
         'as' => 'login',
@@ -88,7 +88,7 @@ Route::group(['namespace' => 'Auth', 'prefix' => 'auth'], function()
     ]);
 });
 
-Route::group(['middleware' => 'auth'], function()
+Route::group(['middleware' => ['auth', 'web']], function()
 {
     Route::resource('product', 'ProductController');
 
