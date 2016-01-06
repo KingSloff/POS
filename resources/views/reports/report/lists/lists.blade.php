@@ -76,7 +76,7 @@
                 <td></td>
             </tr>
         @endforeach
-        @for($counter = $count; $count < 27; $count++)
+        @for($counter = $count; $count < 25; $count++)
             <tr>
                 <td></td>
                 <td></td>
