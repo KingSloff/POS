@@ -19,7 +19,9 @@ class CreateProductsTable extends Migration
             $table->decimal('price');
             $table->double('target_profit_percentage', null, 2);
 
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 

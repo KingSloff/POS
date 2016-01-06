@@ -23,7 +23,9 @@ class CreateOrdersTable extends Migration
             $table->integer('amount')->unsigned();
             $table->decimal('cost');
 
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 

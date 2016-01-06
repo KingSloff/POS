@@ -19,6 +19,17 @@ class Services extends Model
     }
 
     /**
+     * Format a number as xxxx.xx or (xxxx.xx)
+     *
+     * @param $number
+     * @return string
+     */
+    public function displayAccountingAmount($number)
+    {
+        return ($number >= 0) ? $this->displayAmount($number) : '('.$this->displayAmount(abs($number)).')';
+    }
+
+    /**
      * Format a number as currency
      *
      * @param $number

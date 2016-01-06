@@ -27,7 +27,9 @@ class CreateCartItemsTable extends Migration
 
             $table->integer('amount')->unsigned();
 
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 

@@ -57,6 +57,7 @@ class UserController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'balance' => $request->balance,
+                'initial_balance' => $request->balance,
                 'password' => bcrypt($request->password)
             ]);
 
@@ -163,6 +164,10 @@ class UserController extends Controller
 
             $services = new Services();
 
+            $user->payments()->create([
+                'amount' => $request->amountToPay
+            ]);
+
             $user->logs()->create([
                 'title' => 'Amount Paid',
                 'description' => $user->name.' paid '.$services->displayCurrency($request->amountToPay).'.',
@@ -189,6 +194,10 @@ class UserController extends Controller
             $user->save();
 
             $services = new Services();
+
+            $user->payments()->create([
+                'amount' => -$request->amountToLoan
+            ]);
 
             $user->logs()->create([
                 'title' => 'Amount Loaned',

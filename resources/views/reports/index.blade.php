@@ -20,7 +20,7 @@
         <tr>
             <td><a href="{{route('report.trial-balance')}}">Trial Balance</a></td>
 
-            <td></td>
+            <td><a href="{{route('report.lists')}}">Lists</a></td>
         </tr>
         </tbody>
     </table>

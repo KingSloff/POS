@@ -55,6 +55,14 @@ class User extends Model implements AuthenticatableContract,
     }
 
     /**
+     * A user makes many payments/loans
+     */
+    public function payments()
+    {
+        return $this->hasMany('App\Payment');
+    }
+
+    /**
      * Filter users who have debt
      * @param $query
      * @return

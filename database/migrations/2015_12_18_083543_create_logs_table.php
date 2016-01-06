@@ -21,7 +21,9 @@ class CreateLogsTable extends Migration
 
             $table->integer('user_id');
 
-            $table->timestamps();
+            $table->timestamp('created_at')->useCurrent();
+
+            $table->timestamp('updated_at')->useCurrent();
         });
     }
 
