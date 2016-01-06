@@ -12,6 +12,7 @@
         th, td {
             border: 1px solid #000000;
             padding: 0.5em;
+            height: 1rem;
         }
 
         .page-break {
@@ -50,7 +51,9 @@
         </tr>
         </thead>
         <tbody>
+        <?php $count = 0; ?>
         @foreach($userTransactions as $userTransaction)
+            <?php $count++; ?>
             <tr>
                 <td>{{$userTransaction['description']}}</td>
                 <td>{{$userTransaction['date']->timezone(auth()->user()->timezone)->toDateString()}}</td>
@@ -71,6 +74,16 @@
                 <td></td>
             </tr>
         @endforeach
+        @for($counter = $count; $count < 25; $count++)
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        @endfor
         </tbody>
     </table>
 

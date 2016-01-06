@@ -72,7 +72,7 @@ class ReportController extends Controller
      */
     public function lists()
     {
-        $users = User::with(['sales.product', 'payments'])->get();
+        $users = User::with(['sales.product', 'payments'])->orderBy('name')->get();
 
         $usersTransactions = collect();
 
@@ -147,6 +147,8 @@ class ReportController extends Controller
 
             $usersTransactions->put($user->name, $finalTransactions);
         }
+
+
 
         $html = view('reports.report.lists.lists', compact('usersTransactions'))->render();
 
