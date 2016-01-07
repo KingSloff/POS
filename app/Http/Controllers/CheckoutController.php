@@ -165,7 +165,7 @@ class CheckoutController extends Controller
                             $product->sales()->create([
                                 'price' => $product->price,
                                 'amount' => $numberToDeduct,
-                                'cpu' => $stock->cpu(),
+                                'cpu' => $stock->cpu,
                                 'user_id' => $request->user_id
                             ]);
                         else
@@ -173,7 +173,7 @@ class CheckoutController extends Controller
                             $product->sales()->create([
                                 'price' => $product->price,
                                 'amount' => $numberToDeduct,
-                                'cpu' => $stock->cpu()
+                                'cpu' => $stock->cpu
                             ]);
                         }
 
@@ -186,7 +186,7 @@ class CheckoutController extends Controller
                             $product->sales()->create([
                                 'price' => $product->price,
                                 'amount' => $stock->in_stock,
-                                'cpu' => $stock->cpu(),
+                                'cpu' => $stock->cpu,
                                 'user_id' => $request->user_id
                             ]);
                         }
@@ -195,7 +195,7 @@ class CheckoutController extends Controller
                             $product->sales()->create([
                                 'price' => $product->price,
                                 'amount' => $stock->in_stock,
-                                'cpu' => $stock->cpu()
+                                'cpu' => $stock->cpu
                             ]);
                         }
 
