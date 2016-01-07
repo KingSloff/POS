@@ -31,28 +31,28 @@
                     <td>{{$services->displayCurrency($product->price)}}</td>
 
                     <td><strong>Suggested Price</strong></td>
-                    <td>{{$services->displayCurrency($product->suggestedPrice())}}</td>
+                    <td>{{$services->displayCurrency($product->suggested_price)}}</td>
                 </tr>
                 <tr>
                     <td><strong>Profit Percentage</strong></td>
-                    <td>{{$services->displayPercentage($product->profitPercentage())}}</td>
+                    <td>{{$services->displayPercentage($product->profit_percentage)}}</td>
 
                     <td><strong>Stock</strong></td>
                     <td>{{$product->in_stock}}</td>
                 </tr>
                 <tr>
                     <td><strong>Profit Made</strong></td>
-                    <td>{{$services->displayCurrency($product->profit())}}</td>
+                    <td>{{$services->displayCurrency($product->profit)}}</td>
 
                     <td><strong>Average Daily Demand</strong></td>
-                    <td>{{$services->displayAmount($product->averageDailyDemand())}}</td>
+                    <td>{{$services->displayAmount($product->average_daily_demand)}}</td>
                 </tr>
                 <tr>
                     <td><strong>Profit Percentage Made</strong></td>
-                    <td>{{$services->displayPercentage($product->profitPercentageMade())}}</td>
+                    <td>{{$services->displayPercentage($product->profit_percentage_made)}}</td>
 
                     <td><strong>Reorder Point</strong></td>
-                    <td>{{$product->reorderPoint()}}</td>
+                    <td>{{$product->reorder_point}}</td>
                 </tr>
             </tbody>
         </table>

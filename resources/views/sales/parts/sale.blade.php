@@ -5,6 +5,6 @@
     <td>{{$services->displayCurrency($sale->price)}}</td>
     <td>{{$sale->amount}}</td>
     <td>{{$services->displayCurrency($sale->cpu)}}</td>
-    <td>{{$services->displayCurrency($sale->total())}}</td>
-    <td>{{$services->displayPercentage($sale->profitPercentage())}}</td>
+    <td>{{$services->displayCurrency($sale->total)}}</td>
+    <td>{{$services->displayPercentage($sale->profit_percentage)}}</td>
 </tr>

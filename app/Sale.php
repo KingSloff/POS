@@ -21,9 +21,19 @@ class Sale extends Model
     protected $guarded = [];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'total',
+        'profit_percentage'
+    ];
+
+    /**
      * Total made on purchase
      */
-    public function total()
+    public function getTotalAttribute()
     {
         return $this->price * $this->amount;
     }
@@ -31,7 +41,7 @@ class Sale extends Model
     /**
      * Profit percentage made on purchase
      */
-    public function profitPercentage()
+    public function getProfitPercentageAttribute()
     {
         if($this->cpu == 0)
         {

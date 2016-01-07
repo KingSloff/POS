@@ -27,6 +27,25 @@ class Product extends Model
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'profit_percentage',
+        'suggested_price',
+        'profit',
+        'profit_percentage_made',
+        'purchases_per_day',
+        'average_daily_demand',
+        'sd_daily_demand',
+        'lead_times',
+        'average_lead_time',
+        'sd_lead_time',
+        'reorder_point'
+    ];
+
+    /**
      * Number of this product currently in stock
      */
     public function updateStock()
@@ -48,7 +67,7 @@ class Product extends Model
      *
      * @return String
      */
-    public function profitPercentage()
+    public function getProfitPercentageAttribute()
     {
         $smallest = $this->smallestProfitPercentageStock();
 
@@ -57,7 +76,7 @@ class Product extends Model
             return 0;
         }
 
-        return $smallest->profitPercentage();
+        return $smallest->profit_percentage;
     }
 
     /**
@@ -75,7 +94,7 @@ class Product extends Model
             {
                 $smallest = $stock;
             }
-            else if($stock->profitPercentage() < $smallest->profitPercentage())
+            else if($stock->profit_percentage < $smallest->profit_percentage)
             {
                 $smallest = $stock;
             }
@@ -87,7 +106,7 @@ class Product extends Model
     /**
      * Suggested price in order to meet target profit percentage
      */
-    public function suggestedPrice()
+    public function getSuggestedPriceAttribute()
     {
         $smallest = $this->smallestProfitPercentageStock();
 
@@ -96,13 +115,13 @@ class Product extends Model
             return 'N/A';
         }
 
-        return ($smallest->cpu() * $this->target_profit_percentage / 100) + $smallest->cpu();
+        return ($smallest->cpu * $this->target_profit_percentage / 100) + $smallest->cpu;
     }
 
     /**
      * Profit made on this product
      */
-    public function profit()
+    public function getProfitAttribute()
     {
         $profit = 0;
 
@@ -117,7 +136,7 @@ class Product extends Model
     /**
      * Profit percentage made
      */
-    public function profitPercentageMade()
+    public function getProfitPercentageMadeAttribute()
     {
         $totalCost = 0;
 
@@ -131,13 +150,13 @@ class Product extends Model
             return 0;
         }
 
-        return $this->profit() / $totalCost * 100;
+        return $this->profit / $totalCost * 100;
     }
 
     /**
      * Purchases per day
      */
-    public function purchasesPerDay()
+    public function getPurchasesPerDayAttribute()
     {
         $sales = $this->sales;
 
@@ -178,9 +197,9 @@ class Product extends Model
     /**
      * Average daily demand
      */
-    public function averageDailyDemand()
+    public function getAverageDailyDemandAttribute()
     {
-        $purchasesPerDay = $this->purchasesPerDay();
+        $purchasesPerDay = $this->purchases_per_day;
 
         if($purchasesPerDay == null)
         {
@@ -193,9 +212,9 @@ class Product extends Model
     /**
      * Standard deviation of daily demand
      */
-    public function sdDailyDemand()
+    public function getSdDailyDemandAttribute()
     {
-        $purchasesPerDay = $this->purchasesPerDay();
+        $purchasesPerDay = $this->purchases_per_day;
 
         if($purchasesPerDay == null)
         {
@@ -208,7 +227,7 @@ class Product extends Model
     /**
      * Lead times
      */
-    public function leadTimes()
+    public function getLeadTimesAttribute()
     {
         $stocks = $this->stocks;
 
@@ -233,9 +252,9 @@ class Product extends Model
     /**
      * Average lead time
      */
-    public function averageLeadTime()
+    public function getAverageLeadTimeAttribute()
     {
-        $leadTimes = $this->leadTimes();
+        $leadTimes = $this->lead_times;
 
         if($leadTimes == null)
         {
@@ -248,9 +267,9 @@ class Product extends Model
     /**
      * Standard deviation of lead time
      */
-    public function sdLeadTime()
+    public function getSdLeadTimeAttribute()
     {
-        $leadTimes = $this->leadTimes();
+        $leadTimes = $this->lead_times;
 
         if($leadTimes == null)
         {
@@ -263,12 +282,12 @@ class Product extends Model
     /**
      * Reorder point
      */
-    public function reorderPoint()
+    public function getReorderPointAttribute()
     {
         $result =
-            ($this->averageDailyDemand() * $this->averageLeadTime()) +
+            ($this->average_daily_demand * $this->average_lead_time) +
             (Services::normSInv(0.95) * (
-                sqrt( ($this->averageLeadTime() * pow($this->sdDailyDemand(), 2)) + (pow($this->averageDailyDemand(), 2) * pow($this->sdLeadTime(), 2)) )
+                sqrt( ($this->average_lead_time * pow($this->sd_daily_demand, 2)) + (pow($this->average_daily_demand, 2) * pow($this->sd_lead_time, 2)) )
             ));
 
         return ceil($result);

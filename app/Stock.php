@@ -21,11 +21,22 @@ class Stock extends Model
     protected $guarded = [];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'cpu',
+        'profit_percentage',
+        'profit_percentage'
+    ];
+
+    /**
      * Calc the cost per unit
      *
      * @return string
      */
-    public function cpu()
+    public function getCpuAttribute()
     {
         return round($this->cost / $this->amount, 2);
     }
@@ -33,10 +44,10 @@ class Stock extends Model
     /**
      * Profit percentage
      */
-    public function profitPercentage()
+    public function getProfitPercentageAttribute()
     {
         $product = $this->product;
-        $cpu = $this->cpu();
+        $cpu = $this->cpu;
 
         if($cpu == 0)
         {
