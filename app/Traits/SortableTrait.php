@@ -36,6 +36,8 @@ trait SortableTrait {
                 return $collection->sortByDesc(Input::get('s'));
             }
         }
+
+        return $collection;
     }
 
     public static function link_to_sorting_action($col, $title = null, $special = false)
