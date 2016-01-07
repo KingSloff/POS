@@ -6,6 +6,7 @@ use App\Http\Requests\Product\CreateProductRequest;
 use App\Http\Requests\Product\UpdateProductRequest;
 use App\Http\Requests\Product\WriteOffProductRequest;
 use App\Product;
+use App\Traits\SortableTrait;
 use DB;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -22,7 +23,7 @@ class ProductController extends Controller
     {
         $this->authorize(new Product());
 
-        $products = Product::sortable()->get();
+        $products = SortableTrait::specialSort(Product::sortable()->get());
 
         return view('products.index', compact('products'));
     }
