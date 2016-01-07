@@ -48,7 +48,7 @@ class TrialBalanceReport extends Report
 
         foreach ($sales as $sale)
         {
-            $income += $sale->total();
+            $income += $sale->total;
         }
 
         return $income;
@@ -86,7 +86,7 @@ class TrialBalanceReport extends Report
 
         foreach($stocks as $stock)
         {
-            $result += $stock->cpu() * $stock->in_stock;
+            $result += $stock->cpu * $stock->in_stock;
         }
 
         return $result;

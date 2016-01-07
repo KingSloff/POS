@@ -32,7 +32,7 @@ class StatsReport extends Report
 
         foreach ($sales as $sale)
         {
-            $income += $sale->total();
+            $income += $sale->total;
         }
 
         return $income;

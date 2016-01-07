@@ -40,7 +40,12 @@
 @inject('services', 'App\Services')
 
 @foreach($usersTransactions as $username => $userTransactions)
-    <h2>{{$username}}</h2>
+    <table>
+        <tr>
+            <td style="border: none; padding: 0; text-align: left;"><h2>{{$username}}</h2></td>
+            <td style="border: none; padding: 0; text-align: right;"><h3>{{$dateOfReport->format('F Y')}}</h3></td>
+        </tr>
+    </table>
     <table>
         <thead>
         <tr>

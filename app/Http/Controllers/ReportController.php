@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Report\GetListsRequest;
 use App\Jobs\SendDebtorEmail;
 use App\Report\TrialBalanceReport;
 use App\User;
 use App\Http\Requests;
 
 use App\Report\StatsReport;
-use Vsmoraes\Pdf\PdfFacade as PDF;
+use Carbon\Carbon;
+
+use PDF;
 
 class ReportController extends Controller
 {
@@ -69,89 +72,100 @@ class ReportController extends Controller
 
     /**
      * Generate the lists
+     * @param GetListsRequest $request
+     * @return
      */
-    public function lists()
+    public function lists(GetListsRequest $request)
     {
-        $users = User::with(['sales.product', 'payments'])->orderBy('name')->get();
-
-        $usersTransactions = collect();
-
-        foreach($users as $user)
+        if(!$request->has('date'))
         {
-            $transactions = collect();
+            return view('reports.report.lists.lists-select');
+        }
+        else
+        {
+            $dateOfReport = new Carbon($request->date);
 
-            $transactions->push([
-                'description' => 'Balance brought over',
-                'date' => $user->created_at,
-                'debit' => null,
-                'credit' => null
-            ]);
+            $users = User::with(['sales.product', 'payments'])->orderBy('name')->get();
 
-            foreach($user->sales as $sale)
+            $usersTransactions = collect();
+
+            foreach($users as $user)
             {
+                $transactions = collect();
+
                 $transactions->push([
-                    'description' => $sale->product->name,
-                    'date' => $sale->created_at,
-                    'debit' => $sale->total(),
+                    'description' => 'Balance brought over',
+                    'date' => $dateOfReport,
+                    'debit' => null,
                     'credit' => null
                 ]);
-            }
 
-            foreach($user->payments as $payment)
-            {
-                $amount = $payment->amount;
-
-                if($amount >= 0)
+                foreach($user->sales as $sale)
                 {
                     $transactions->push([
-                        'description' => 'Payment made',
-                        'date' => $payment->created_at,
-                        'debit' => null,
-                        'credit' => $amount
-                    ]);
-                }
-                else
-                {
-                    $transactions->push([
-                        'description' => 'Amount loaned',
-                        'date' => $payment->created_at,
-                        'debit' => abs($amount),
+                        'description' => $sale->product->name,
+                        'date' => $sale->created_at,
+                        'debit' => $sale->total,
                         'credit' => null
                     ]);
                 }
+
+                foreach($user->payments as $payment)
+                {
+                    $amount = $payment->amount;
+
+                    if($amount >= 0)
+                    {
+                        $transactions->push([
+                            'description' => 'Payment made',
+                            'date' => $payment->created_at,
+                            'debit' => null,
+                            'credit' => $amount
+                        ]);
+                    }
+                    else
+                    {
+                        $transactions->push([
+                            'description' => 'Amount loaned',
+                            'date' => $payment->created_at,
+                            'debit' => abs($amount),
+                            'credit' => null
+                        ]);
+                    }
+                }
+
+                $transactions = $transactions->sortBy('date');
+                //dd($transactions);
+                $finalTransactions = collect();
+
+                $balance = $user->initial_balance;
+
+                foreach($transactions as $transaction)
+                {
+                    if(!empty($transaction['debit']))
+                    {
+                        $balance -= $transaction['debit'];
+                    }
+                    else if(!empty($transaction['credit']))
+                    {
+                        $balance += $transaction['credit'];
+                    }
+
+                    $transaction = collect($transaction);
+
+                    $transaction->put('balance', $balance);
+
+                    if($dateOfReport->year == $transaction['date']->year &&
+                        $dateOfReport->month == $transaction['date']->month)
+                        $finalTransactions->push($transaction);
+                }
+
+                $usersTransactions->put($user->name, $finalTransactions);
             }
 
-            $transactions = $transactions->sortBy('date');
-            //dd($transactions);
-            $finalTransactions = collect();
+            $pdf = PDF::loadView('reports.report.lists.lists', compact('usersTransactions', 'dateOfReport'));
 
-            $balance = $user->initial_balance;
-
-            foreach($transactions as $transaction)
-            {
-                if(!empty($transaction['debit']))
-                {
-                    $balance -= $transaction['debit'];
-                }
-                else if(!empty($transaction['credit']))
-                {
-                    $balance += $transaction['credit'];
-                }
-
-                $transaction = collect($transaction);
-
-                $transaction->put('balance', $balance);
-
-                $finalTransactions->push($transaction);
-            }
-
-            $usersTransactions->put($user->name, $finalTransactions);
+            return $pdf->stream('Lists.pdf');
         }
-
-
-
-        $html = view('reports.report.lists.lists', compact('usersTransactions'))->render();
-
-        return PDF::load($html)->show();
     }
 }

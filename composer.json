@@ -9,7 +9,7 @@
         "laravel/framework": "5.2.*",
         "laravelcollective/html": "5.2.*",
         "doctrine/dbal": "^2.5",
-        "vsmoraes/laravel-pdf": "^1.0"
+        "barryvdh/laravel-dompdf": "0.6.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
