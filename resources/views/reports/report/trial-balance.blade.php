@@ -7,12 +7,12 @@
 @section('body')
 	<div>
         <h2>
-            <a href="{{route('report.index')}}" class="glyphicon glyphicon-chevron-left"></a>
+            <a href="{{route('report.index')}}" class="glyphicon glyphicon-chevron-left no-print"></a>
             Trial Balance
         </h2>
 
         <br>
-        <div class="row">
+        <div class="row no-print">
             <div class="col-sm-3">
                 {{ Form::open(['route' => ['report.trial-balance.bank']]) }}
 
@@ -30,9 +30,9 @@
 
         <table class="table table-striped">
             <colgroup>
-                <col span="1" style="width: 80%;">
-                <col span="1" style="width: 10%;">
-                <col span="1" style="width: 10%;">
+                <col span="1" style="width: 70%;">
+                <col span="1" style="width: 15%;">
+                <col span="1" style="width: 15%;">
             </colgroup>
             <thead>
             <tr>
