@@ -2,6 +2,7 @@
 
 namespace App\Report;
 
+use App\Bank;
 use App\Payment;
 use App\Product;
 use Illuminate\Database\Eloquent\Model;
@@ -41,8 +42,9 @@ class TrialBalanceReport extends Report
         $this->cumulative_profit = $this->cumulativeProfit();
 
         $this->cash = $this->cash();
+        $this->bank = $this->bank();
 
-        $this->total_debit2 = $this->cash + abs($this->total_debtors) + $this->closing_inventory;
+        $this->total_debit2 = $this->cash + $this->bank + abs($this->total_debtors) + $this->closing_inventory;
         $this->total_credit2 = $this->total_creditors;
 
         if($this->cumulative_profit < 0)
@@ -142,7 +144,7 @@ class TrialBalanceReport extends Report
      */
     public function cumulativeProfit()
     {
-        return config('default.starting_cash') + $this->profit;
+        return config('default.starting_cash') + config('default.starting_bank') + $this->profit;
     }
 
     /**
@@ -167,6 +169,17 @@ class TrialBalanceReport extends Report
 
         $initialBalances = User::sum('initial_balance');
 
-        return $startingCash + $amountPaid + $totalCashSales + $initialBalances - $stockCost - $amountLoaned;
+        $paymentsToBank = Bank::sum('amount');
+
+        return $startingCash + $amountPaid + $totalCashSales + $initialBalances - $stockCost - $amountLoaned -
+            $paymentsToBank;
+    }
+
+    /**
+     * Get amount in bank
+     */
+    public function bank()
+    {
+        return config('default.starting_bank') + Bank::sum('amount');
     }
 }

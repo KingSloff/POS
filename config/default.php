@@ -9,5 +9,6 @@ return [
     ],
 
     'starting_cash' => env('STARTING_CASH'),
+    'starting_bank' => env('STARTING_BANK'),
 
 ];

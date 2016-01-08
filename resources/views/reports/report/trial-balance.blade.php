@@ -11,6 +11,23 @@
             Trial Balance
         </h2>
 
+        <br>
+        <div class="row">
+            <div class="col-sm-3">
+                {{ Form::open(['route' => ['report.trial-balance.bank']]) }}
+
+                <div class="form-group">
+                    <label for="amountToBank">Amount to Bank</label>
+                    {{ Form::text('amountToBank', null, ['class' => 'form-control']) }}
+                </div>
+
+                <button type="submit" class="btn btn-success">Bank</button>
+
+                {{ Form::close() }}
+            </div>
+        </div>
+        <br>
+
         <table class="table table-striped">
             <colgroup>
                 <col span="1" style="width: 80%;">
@@ -68,7 +85,12 @@
             </tr>
             <tr>
                 <td>Cash</td>
-                <td>{{$services->displayAmount(abs($report->cash))}}</td>
+                <td>{{$services->displayAmount($report->cash)}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Bank</td>
+                <td>{{$services->displayAmount($report->bank)}}</td>
                 <td></td>
             </tr>
             <tr>

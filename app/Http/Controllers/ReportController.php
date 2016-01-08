@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Bank;
+use App\Http\Requests\Report\BankRequest;
 use App\Http\Requests\Report\GetListsRequest;
 use App\Jobs\SendDebtorEmail;
 use App\Report\TrialBalanceReport;
@@ -68,6 +70,21 @@ class ReportController extends Controller
         $report = new TrialBalanceReport();
 
         return view('reports.report.trial-balance', compact('report'));
+    }
+
+    /**
+     * Bank an amount
+     *
+     * @param BankRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function bank(BankRequest $request)
+    {
+        Bank::create([
+            'amount' => $request->amountToBank
+        ]);
+
+        return redirect()->route('report.trial-balance')->with('success', 'Amount Banked');
     }
 
     /**

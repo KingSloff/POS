@@ -73,6 +73,11 @@ Route::group(['middleware' => ['auth']], function() {
         'uses' => 'ReportController@trialBalance'
     ]);
 
+    Route::post('/reports/trial-balance/bank', [
+        'as' => 'report.trial-balance.bank',
+        'uses' => 'ReportController@bank'
+    ]);
+
     Route::get('/reports/lists', [
         'as' => 'report.lists',
         'uses' => 'ReportController@lists'
