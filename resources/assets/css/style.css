@@ -17,8 +17,13 @@ pre
 }
 
 @media print {
-    .no-print, .no-print *
+    .no-print, .no-print *, .btn
     {
         display: none !important;
+    }
+
+    a[href]:after
+    {
+        content: none;
     }
 }
