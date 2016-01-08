@@ -18,49 +18,84 @@
                 <col span="1" style="width: 10%;">
             </colgroup>
             <thead>
-                <tr>
-                    <td><strong>Description</strong></td>
-                    <td><strong>Debits</strong></td>
-                    <td><strong>Credits</strong></td>
-                </tr>
+            <tr>
+                <td><strong>Description</strong></td>
+                <td><strong>Debits</strong></td>
+                <td><strong>Credits</strong></td>
+            </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>Sales</td>
+            <tr>
+                <td>Sales</td>
+                <td></td>
+                <td>{{$services->displayAmount($report->sales)}}</td>
+            </tr>
+            <tr>
+                <td>Opening Inventory</td>
+                <td>{{$services->displayAmount($report->opening_inventory)}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Purchases</td>
+                <td>{{$services->displayAmount($report->purchases)}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Closing Inventory</td>
+                <td></td>
+                <td>{{$services->displayAmount($report->closing_inventory)}}</td>
+            </tr>
+            <tr>
+                @if($report->profit >= 0)
+                    <td>Profit</td>
+                    <td>{{$services->displayAmount($report->profit)}}</td>
                     <td></td>
-                    <td>{{$services->displayAmount($report->sales)}}</td>
-                </tr>
-                <tr>
-                    <td>Opening Inventory</td>
-                    <td>{{$services->displayAmount($report->opening_inventory)}}</td>
+                @else
+                    <td>Loss</td>
                     <td></td>
-                </tr>
-                <tr>
-                    <td>Purchases</td>
-                    <td>{{$services->displayAmount($report->purchases)}}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Closing Inventory</td>
-                    <td></td>
-                    <td>{{$services->displayAmount($report->closing_inventory)}}</td>
-                </tr>
-                <tr>
-                    @if($report->profit >= 0)
-                        <td>Profit</td>
-                        <td>{{$services->displayAmount($report->profit)}}</td>
-                        <td></td>
-                    @else
-                        <td>Loss</td>
-                        <td></td>
-                        <td>{{$services->displayAmount(abs($report->profit))}}</td>
-                    @endif
-                </tr>
-                <tr>
-                    <td><strong>Total</strong></td>
-                    <td><strong>{{$services->displayAmount($report->totalDebit)}}</strong></td>
-                    <td><strong>{{$services->displayAmount($report->totalCredit)}}</strong></td>
-                </tr>
+                    <td>{{$services->displayAmount(abs($report->profit))}}</td>
+                @endif
+            </tr>
+            <tr>
+                <td><strong>Total</strong></td>
+                <td><strong>{{$services->displayAmount($report->total_debit1)}}</strong></td>
+                <td><strong>{{$services->displayAmount($report->total_credit1)}}</strong></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Cash</td>
+                <td>{{$services->displayAmount(abs($report->cash))}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Debtors</td>
+                <td>{{$services->displayAmount(abs($report->total_debtors))}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Creditors</td>
+                <td></td>
+                <td>{{$services->displayAmount($report->total_creditors)}}</td>
+            </tr>
+            <tr>
+                <td>Closing Inventory</td>
+                <td>{{$services->displayAmount($report->closing_inventory)}}</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Cumulative Profit</td>
+                <td></td>
+                <td>{{$services->displayAmount($report->cumulative_profit)}}</td>
+            </tr>
+            <tr>
+                <td><strong>Total</strong></td>
+                <td><strong>{{$services->displayAmount($report->total_debit2)}}</strong></td>
+                <td><strong>{{$services->displayAmount($report->total_credit2)}}</strong></td>
+            </tr>
             </tbody>
         </table>
     </div>
