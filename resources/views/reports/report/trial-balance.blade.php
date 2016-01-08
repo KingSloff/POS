@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Basic Stats')
+@section('title', 'Trial Balance')
 
 @inject('services', 'App\Services')
 

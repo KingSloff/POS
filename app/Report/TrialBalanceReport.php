@@ -165,6 +165,8 @@ class TrialBalanceReport extends Report
             $totalCashSales += $cashSale->total;
         }
 
-        return $startingCash + $amountPaid + $totalCashSales - $stockCost - $amountLoaned;
+        $initialBalances = User::sum('initial_balance');
+
+        return $startingCash + $amountPaid + $totalCashSales + $initialBalances - $stockCost - $amountLoaned;
     }
 }
