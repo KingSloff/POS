@@ -214,7 +214,7 @@ class TrialBalanceReport extends Report
             $totalCashSales += $cashSale->total;
         }
 
-        $initialBalances = User::dateRangeFrom($this->from)->sum('initial_balance');
+        $initialBalances = User::dateRangeTo($this->to)->sum('initial_balance');
 
         $paymentsToBank = Bank::dateRangeTo($this->to)->sum('amount');
 
