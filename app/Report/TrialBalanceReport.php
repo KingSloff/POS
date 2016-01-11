@@ -162,7 +162,7 @@ class TrialBalanceReport extends Report
      */
     public function totalCreditors()
     {
-        $users = User::with('sales', 'payments')->get();
+        $users = User::dateRangeTo($this->to)->with('sales', 'payments')->get();
 
         $total = 0;
 
