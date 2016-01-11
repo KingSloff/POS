@@ -6,6 +6,7 @@ use App\Bank;
 use App\Http\Requests\Report\BankRequest;
 use App\Http\Requests\Report\GetListsRequest;
 use App\Http\Requests\Report\TrialBalanceRequest;
+use App\Http\Requests\Report\WithdrawRequest;
 use App\Jobs\SendDebtorEmail;
 use App\Report\TrialBalanceReport;
 use App\User;
@@ -95,6 +96,21 @@ class ReportController extends Controller
         ]);
 
         return redirect()->route('report.trial-balance')->with('success', 'Amount Banked');
+    }
+
+    /**
+     * Bank an amount
+     *
+     * @param WithdrawRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function withdraw(WithdrawRequest $request)
+    {
+        Bank::create([
+            'amount' => -1 * $request->amountToWithdraw
+        ]);
+
+        return redirect()->route('report.trial-balance')->with('success', 'Amount Withdrawn');
     }
 
     /**

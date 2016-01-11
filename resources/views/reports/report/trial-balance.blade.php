@@ -12,7 +12,7 @@
         </h2>
 
         <br>
-        <div class="row no-print">
+        <div class="row">
 
             {{ Form::open(['route' => 'report.trial-balance', 'method' => 'get']) }}
             <div class="col-sm-3">
@@ -30,19 +30,6 @@
                 </div>
             </div>
             {{ Form::close() }}
-
-            <div class="col-sm-3">
-                {{ Form::open(['route' => ['report.trial-balance.bank']]) }}
-
-                <div class="form-group">
-                    <label for="amountToBank">Amount to Bank</label>
-                    {{ Form::text('amountToBank', null, ['class' => 'form-control']) }}
-                </div>
-
-                <button type="submit" class="btn btn-success">Bank</button>
-
-                {{ Form::close() }}
-            </div>
         </div>
         <br>
 
@@ -138,5 +125,34 @@
             </tr>
             </tbody>
         </table>
+
+        <br>
+        <div class="row no-print">
+            <div class="col-sm-3">
+                {{ Form::open(['route' => ['report.trial-balance.bank']]) }}
+
+                <div class="form-group">
+                    <label for="amountToBank">Amount to Bank</label>
+                    {{ Form::text('amountToBank', null, ['class' => 'form-control']) }}
+                </div>
+
+                <button type="submit" class="btn btn-success">Bank</button>
+
+                {{ Form::close() }}
+            </div>
+
+            <div class="col-sm-3">
+                {{ Form::open(['route' => ['report.trial-balance.withdraw']]) }}
+
+                <div class="form-group">
+                    <label for="amountToWithdraw">Amount to Withdraw</label>
+                    {{ Form::text('amountToWithdraw', null, ['class' => 'form-control']) }}
+                </div>
+
+                <button type="submit" class="btn btn-success">Withdraw</button>
+
+                {{ Form::close() }}
+            </div>
+        </div>
     </div>
 @endsection
