@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Bank;
 use App\Http\Requests\Report\BankRequest;
 use App\Http\Requests\Report\GetListsRequest;
+use App\Http\Requests\Report\TrialBalanceRequest;
 use App\Jobs\SendDebtorEmail;
 use App\Report\TrialBalanceReport;
 use App\User;
@@ -64,10 +65,19 @@ class ReportController extends Controller
 
     /**
      * Generate the trial balance
+     * @param TrialBalanceRequest $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function trialBalance()
+    public function trialBalance(TrialBalanceRequest $request)
     {
-        $report = new TrialBalanceReport();
+        $report = new TrialBalanceReport($request->from, $request->to);
+
+        if($report->from->gt($report->to))
+        {
+            return redirect()->route('report.trial-balance')
+                ->withErrors('From date should be before to date')
+                ->withInput();
+        }
 
         return view('reports.report.trial-balance', compact('report'));
     }

@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Traits\DateRangeTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
+    use DateRangeTrait;
+
     /**
      * The table associated with the model.
      *

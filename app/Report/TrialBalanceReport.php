@@ -4,58 +4,40 @@ namespace App\Report;
 
 use App\Bank;
 use App\Payment;
-use App\Product;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 use App\Sale;
 use App\Stock;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\DB;
 
 class TrialBalanceReport extends Report
 {
-	/**
-	 * Constructor to initialize attributes
-	 */
-	public function __construct()
+    /**
+     * Constructor to initialize attributes
+     * @param $from
+     * @param $to
+     */
+	public function __construct($from, $to)
 	{
+        $this->from = ($from == null) ? Carbon::minValue() : new Carbon($from);
+        $this->to = ($to == null) ? Carbon::maxValue() : new Carbon($to);
+
+        $this->from = $this->from->firstOfMonth();
+        $this->to = $this->to->lastOfMonth();
+
         $this->sales = $this->sales();
         $this->opening_inventory = $this->openingInventory();
         $this->closing_inventory = $this->closingInventory();
         $this->purchases = $this->purchases();
         $this->profit = $this->profit();
 
-        $this->total_debit1 = $this->opening_inventory + $this->purchases;
-        $this->total_credit1 = $this->sales + $this->closing_inventory;
-
-        if($this->profit >= 0)
-        {
-            $this->total_debit1 += $this->profit;
-        }
-        else
-        {
-            $this->total_credit1 += abs($this->profit);
-        }
-
         $this->total_debtors = $this->totalDebtors();
         $this->total_creditors = $this->totalCreditors();
-        $this->cumulative_profit = $this->cumulativeProfit();
 
         $this->cash = $this->cash();
         $this->bank = $this->bank();
-
-        $this->total_debit2 = $this->cash + $this->bank + abs($this->total_debtors) + $this->closing_inventory;
-        $this->total_credit2 = $this->total_creditors;
-
-        if($this->cumulative_profit < 0)
-        {
-            $this->total_debit2 += abs($this->cumulative_profit);
-        }
-        else
-        {
-            $this->total_credit2 += $this->cumulative_profit;
-        }
-
 	}
 
     /**
@@ -66,7 +48,7 @@ class TrialBalanceReport extends Report
     {
         $income = 0;
 
-        $sales = Sale::get();
+        $sales = Sale::dateRange($this->from, $this->to)->get();
 
         foreach ($sales as $sale)
         {
@@ -82,9 +64,10 @@ class TrialBalanceReport extends Report
      */
     public function openingInventory()
     {
-        $openingInventory = DB::table('reports')->where('description', 'OpeningInventory')->first();
+        $stocksValue = Stock::dateRangeTo($this->from)->sum('cost');
+        $salesValue = Sale::dateRangeTo($this->from)->sum(DB::raw('`cpu` * `amount`'));
 
-        return $openingInventory->value;
+        return $stocksValue - $salesValue;
     }
 
     /**
@@ -93,7 +76,7 @@ class TrialBalanceReport extends Report
      */
     public function purchases()
     {
-        return Stock::sum('cost');
+        return Stock::dateRange($this->from, $this->to)->sum('cost');
     }
 
     /**
@@ -102,16 +85,10 @@ class TrialBalanceReport extends Report
      */
     public function closingInventory()
     {
-        $stocks = Stock::hasStock()->get();
+        $stocksValue = Stock::dateRangeTo($this->to)->sum('cost');
+        $salesValue = Sale::dateRangeTo($this->to)->sum(DB::raw('`cpu` * `amount`'));
 
-        $result = 0;
-
-        foreach($stocks as $stock)
-        {
-            $result += $stock->cpu * $stock->in_stock;
-        }
-
-        return $result;
+        return $stocksValue - $salesValue;
     }
 
     /**
@@ -124,11 +101,60 @@ class TrialBalanceReport extends Report
     }
 
     /**
+     * Get the first total debits
+     */
+    public function totalDebits1()
+    {
+        $result = $this->opening_inventory + $this->purchases;
+
+        if($this->profit >= 0)
+        {
+            $result += $this->profit;
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get the first total credits
+     */
+    public function totalCredits1()
+    {
+        $result = $this->sales + $this->closing_inventory;
+
+        if($this->profit < 0)
+        {
+            $result += abs($this->profit);
+        }
+
+        return $result;
+    }
+
+    /**
      * Total owed by debtors
      */
     public function totalDebtors()
     {
-        return User::where('balance', '<', 0)->sum('balance');
+        $users = User::with('sales', 'payments')->get();
+
+        $total = 0;
+
+        foreach($users as $user)
+        {
+            $initialBalance = $user->initial_balance;
+
+            $payments = $user->payments()->dateRangeTo($this->to)->sum('amount');
+
+            $sales = $user->sales()->dateRangeTo($this->to)
+                ->sum(DB::raw('`price` * `amount`'));
+
+            $totalUser = $initialBalance + $payments - $sales;
+
+            if($totalUser < 0)
+                $total += $totalUser;
+        }
+
+        return $total;
     }
 
     /**
@@ -136,7 +162,26 @@ class TrialBalanceReport extends Report
      */
     public function totalCreditors()
     {
-        return User::where('balance', '>', 0)->sum('balance');
+        $users = User::with('sales', 'payments')->get();
+
+        $total = 0;
+
+        foreach($users as $user)
+        {
+            $initialBalance = $user->initial_balance;
+
+            $payments = $user->payments()->dateRangeTo($this->to)->sum('amount');
+
+            $sales = $user->sales()->dateRangeTo($this->to)
+                ->sum(DB::raw('`price` * `amount`'));
+
+            $totalUser = $initialBalance + $payments - $sales;
+
+            if($totalUser > 0)
+                $total += $totalUser;
+        }
+
+        return $total;
     }
 
     /**
@@ -144,7 +189,9 @@ class TrialBalanceReport extends Report
      */
     public function cumulativeProfit()
     {
-        return config('default.starting_cash') + config('default.starting_bank') + $this->profit;
+        $tmpTrialBalanceReport = new TrialBalanceReport(Carbon::minValue()->toDateString(), $this->to);
+
+        return config('default.starting_cash') + config('default.starting_bank') + $tmpTrialBalanceReport->profit;
     }
 
     /**
@@ -154,12 +201,12 @@ class TrialBalanceReport extends Report
     {
         $startingCash = config('default.starting_cash');
 
-        $stockCost = Stock::sum('cost');
+        $stockCost = Stock::dateRangeTo($this->to)->sum('cost');
 
-        $amountLoaned = abs(Payment::where('amount', '<', 0)->sum('amount'));
-        $amountPaid = Payment::where('amount', '>', 0)->sum('amount');
+        $amountLoaned = abs(Payment::dateRangeTo($this->to)->where('amount', '<', 0)->sum('amount'));
+        $amountPaid = Payment::dateRangeTo($this->to)->where('amount', '>', 0)->sum('amount');
 
-        $cashSales = Sale::where('user_id', null)->get();
+        $cashSales = Sale::dateRangeTo($this->to)->where('user_id', null)->get();
         $totalCashSales = 0;
 
         foreach($cashSales as $cashSale)
@@ -167,9 +214,9 @@ class TrialBalanceReport extends Report
             $totalCashSales += $cashSale->total;
         }
 
-        $initialBalances = User::sum('initial_balance');
+        $initialBalances = User::dateRangeFrom($this->from)->sum('initial_balance');
 
-        $paymentsToBank = Bank::sum('amount');
+        $paymentsToBank = Bank::dateRangeTo($this->to)->sum('amount');
 
         return $startingCash + $amountPaid + $totalCashSales + $initialBalances - $stockCost - $amountLoaned -
             $paymentsToBank;
@@ -180,6 +227,36 @@ class TrialBalanceReport extends Report
      */
     public function bank()
     {
-        return config('default.starting_bank') + Bank::sum('amount');
+        return config('default.starting_bank') + Bank::dateRangeTo($this->to)->sum('amount');
+    }
+
+    /**
+     * Get the second total debits
+     */
+    public function totalDebits2()
+    {
+        $result = $this->cash + $this->bank + abs($this->total_debtors) + $this->closing_inventory;
+
+        if($this->cumulativeProfit() < 0)
+        {
+            $result += abs($this->cumulativeProfit());
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get the second total credits
+     */
+    public function totalCredits2()
+    {
+        $result = $this->total_creditors;
+
+        if($this->cumulativeProfit() > 0)
+        {
+            $result += $this->cumulativeProfit();
+        }
+
+        return $result;
     }
 }

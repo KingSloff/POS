@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Traits\DateRangeTrait;
 use App\Traits\SortableTrait;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +16,7 @@ class User extends Model implements AuthenticatableContract,
                                     AuthorizableContract,
                                     CanResetPasswordContract
 {
-    use Authenticatable, Authorizable, CanResetPassword, SortableTrait;
+    use Authenticatable, Authorizable, CanResetPassword, SortableTrait, DateRangeTrait;
 
     /**
      * The database table used by the model.

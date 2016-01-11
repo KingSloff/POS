@@ -2,10 +2,13 @@
 
 namespace App;
 
+use App\Traits\DateRangeTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model
 {
+    use DateRangeTrait;
+
     /**
      * The table associated with the model.
      *

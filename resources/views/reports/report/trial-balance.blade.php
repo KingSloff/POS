@@ -13,6 +13,24 @@
 
         <br>
         <div class="row no-print">
+
+            {{ Form::open(['route' => 'report.trial-balance', 'method' => 'get']) }}
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="from">From</label>
+                    {{Form::input('month', 'from', Input::get('from'), ['class' => 'form-control'])}}
+                </div>
+
+                <button type="submit" class="btn btn-success">Submit</button>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="to">To</label>
+                    {{Form::input('month', 'to', Input::get('to'), ['class' => 'form-control'])}}
+                </div>
+            </div>
+            {{ Form::close() }}
+
             <div class="col-sm-3">
                 {{ Form::open(['route' => ['report.trial-balance.bank']]) }}
 
@@ -75,8 +93,8 @@
             </tr>
             <tr>
                 <td><strong>Total</strong></td>
-                <td><strong>{{$services->displayAmount($report->total_debit1)}}</strong></td>
-                <td><strong>{{$services->displayAmount($report->total_credit1)}}</strong></td>
+                <td><strong>{{$services->displayAmount($report->totalDebits1())}}</strong></td>
+                <td><strong>{{$services->displayAmount($report->totalCredits1())}}</strong></td>
             </tr>
             <tr>
                 <td></td>
@@ -111,12 +129,12 @@
             <tr>
                 <td>Cumulative Profit</td>
                 <td></td>
-                <td>{{$services->displayAmount($report->cumulative_profit)}}</td>
+                <td>{{$services->displayAmount($report->cumulativeProfit())}}</td>
             </tr>
             <tr>
                 <td><strong>Total</strong></td>
-                <td><strong>{{$services->displayAmount($report->total_debit2)}}</strong></td>
-                <td><strong>{{$services->displayAmount($report->total_credit2)}}</strong></td>
+                <td><strong>{{$services->displayAmount($report->totalDebits2())}}</strong></td>
+                <td><strong>{{$services->displayAmount($report->totalCredits2())}}</strong></td>
             </tr>
             </tbody>
         </table>
