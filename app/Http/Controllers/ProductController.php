@@ -160,7 +160,7 @@ class ProductController extends Controller
                     $product->sales()->create([
                         'price' => 0,
                         'amount' => $writeOff,
-                        'cpu' => $stock->cpu()
+                        'cpu' => $stock->cpu
                     ]);
 
                     break;
@@ -170,7 +170,7 @@ class ProductController extends Controller
                     $product->sales()->create([
                         'price' => 0,
                         'amount' => $stock->in_stock,
-                        'cpu' => $stock->cpu()
+                        'cpu' => $stock->cpu
                     ]);
 
                     $writeOff -= $stock->in_stock;
