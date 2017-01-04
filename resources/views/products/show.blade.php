@@ -7,15 +7,15 @@
 @section('body')
     <div>
         <h2>
-            {{ Form::open(['route' => ['product.destroy', $product], 'method' => 'delete']) }}
+            {{--{{ Form::open(['route' => ['product.destroy', $product], 'method' => 'delete']) }}--}}
             <a href="{{route('product.index')}}" class="glyphicon glyphicon-chevron-left"></a>
             {{$product->name}}
 
             <div style="float: right">
                 <a href="{{route('product.edit', $product)}}" class="btn btn-primary">Edit</a>
-                <button type="submit" class="btn btn-danger">Delete</button>
+                {{--<button type="submit" class="btn btn-danger">Delete</button>--}}
             </div>
-            {{ Form::close() }}
+            {{--{{ Form::close() }}--}}
         </h2>
 
         <table class="table table-striped">
