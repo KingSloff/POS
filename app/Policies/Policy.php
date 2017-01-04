@@ -18,9 +18,9 @@ class Policy
      */
     public function before($user, $ability)
     {
-        if ($user->is_admin)
+        /*if ($user->is_admin)
         {
             return true;
-        }
+        }*/
     }
 }
